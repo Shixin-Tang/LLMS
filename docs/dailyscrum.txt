@@ -23,14 +23,29 @@
 - Create the GitHub repository
 - Create the Trello board
 - Create the Azure database
+- Assign Tasks to team member
 3. Need assistance / figure things out
 - Find a library to export pdf
 - Find a solution of unit test
 - Find a solution of upload file to Azure Storage
 
-2024/02/20 Tang Shixin
+2024/02/21 Tang Shixin
 1. Done / not done since last scrum:
 - Create the GitHub repository and invite team member
 - Create the Trello board and invite team member
 - Create the Azure database
+2. To do until next Scrum:
+- Create tables in Azure Database
+- Share the Azure database connection string
+- Create Azure storage
+3. Need assistance / figure things out
+- Learn how to create azure storage (watch videos)
+
+-------------------------------------------------------------------------------------------------------
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------
 
