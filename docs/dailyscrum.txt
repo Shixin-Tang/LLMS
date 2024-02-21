@@ -54,10 +54,16 @@
 - visual machine is too slow to develop, need a code template to follow 
 
 -------------------------------------------------------------------------------------------------------
-
-
-
-
+2024/02/21 Zhi Li
+1. Done / not done since last scrum:
+- Learning how to export to PDF
+- Learning MVVM
+2. To do until next Scrum:
+- Learning Unit Test
+- Prepare local development Environments
+- Start to build the window
+3. Need assistance / figure things out
+- MVVM architect still have some problems to figure out 
 
 -------------------------------------------------------------------------------------------------------
 
