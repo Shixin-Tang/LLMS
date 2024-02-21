@@ -29,6 +29,8 @@
 - Find a solution of unit test
 - Find a solution of upload file to Azure Storage
 
+-------------------------------------------------------------------------------------------------------
+
 2024/02/21 Tang Shixin
 1. Done / not done since last scrum:
 - Create the GitHub repository and invite team member
@@ -40,6 +42,8 @@
 - Create Azure storage
 3. Need assistance / figure things out
 - Learn how to create azure storage (watch videos)
+
+-------------------------------------------------------------------------------------------------------
 
 2024/02/21 Cao, Lisi
 1. Done / not done since last scrum:
@@ -54,6 +58,7 @@
 - visual machine is too slow to develop, need a code template to follow 
 
 -------------------------------------------------------------------------------------------------------
+
 2024/02/21 Zhi Li
 1. Done / not done since last scrum:
 - Learning how to export to PDF
@@ -65,5 +70,4 @@
 3. Need assistance / figure things out
 - MVVM architect still have some problems to figure out 
 
--------------------------------------------------------------------------------------------------------
 
