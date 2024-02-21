@@ -41,6 +41,18 @@
 3. Need assistance / figure things out
 - Learn how to create azure storage (watch videos)
 
+2024/02/21 Cao, Lisi
+1. Done / not done since last scrum:
+- Abandon previous proposal
+- Reach an agreement in project plan
+- Learning MVVM
+2. To do until next Scrum:
+- Learning Unit Test
+- Prepare local development Environments
+- Look into current version, provide solutions with project management
+3. Need assistance / figure things out
+- visual machine is too slow to develop, need a code template to follow 
+
 -------------------------------------------------------------------------------------------------------
 
 
