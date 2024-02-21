@@ -34,3 +34,31 @@ The system features a modular design, comprising four main components: property 
 ### Database Design:
 
 The database design is structured to support the system's core functionalities effectively:
+
+![Database Diagram](images/LLS-Database-Design.jpg)
+
+### Use Case Diagram:
+
+![Use Case Diagram](images/useCase.jpg)
+
+### Mockups:
+
+#### Main Window:
+
+Provides quick access to all windows. Show the property list of the landlord. And support buttons to guide users to see the details of the current property, lease, and tenant.
+![Main Window](images/LLMS-home.jpg)
+
+#### Lease Window:
+
+Show the lease list and detail information, and allow the user to create, update, or delete one lease.
+![Lease Window](images/LLMS-lease.jpg)
+
+#### Tenant Window:
+
+Show the tenant list and detail information, and allow the user to create, update, or delete one tenant.
+![Tenant Window](images/LLMS-tenant.jpg)
+
+#### Property Window:
+
+Show the property list and detail information including one image, and allow the user to create, update, or delete one property.
+![Property Window](images/LLMS-property.jpg)
