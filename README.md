@@ -4,9 +4,9 @@
 
 ### Team members:
 
--   Lisi Cao (2387145)
--   Shixin Tang (6268458)
--   Zhi Li (0645750)
+-   Lisi Cao
+-   Shixin Tang
+-   Zhi Li
 
 ### Project Description:
 
