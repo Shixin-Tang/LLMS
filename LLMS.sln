@@ -1,9 +1,10 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34607.79
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLMS", "LLMS.csproj", "{8C9F14EF-DCC4-423C-99B5-4008405ACF6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LLMS", "LLMS.csproj", "{8C9F14EF-DCC4-423C-99B5-4008405ACF6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLeaseWindow", "..\TestLeaseWindow\TestLeaseWindow.csproj", "{02215623-C983-4BAF-AC67-381D8DC43532}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +16,10 @@ Global
 		{8C9F14EF-DCC4-423C-99B5-4008405ACF6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C9F14EF-DCC4-423C-99B5-4008405ACF6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C9F14EF-DCC4-423C-99B5-4008405ACF6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02215623-C983-4BAF-AC67-381D8DC43532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02215623-C983-4BAF-AC67-381D8DC43532}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02215623-C983-4BAF-AC67-381D8DC43532}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02215623-C983-4BAF-AC67-381D8DC43532}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

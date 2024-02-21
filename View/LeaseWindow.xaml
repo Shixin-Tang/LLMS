@@ -1,0 +1,79 @@
+﻿<Window x:Class="LLMS.LeaseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LLMS"
+        mc:Ignorable="d"
+        Title="Lease - Landlord Management System" Height="450" Width="800">
+    <Grid>
+        <DockPanel>
+            <!-- 顶部菜单和项目名 -->
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_MainMenu">
+                    <!--<MenuItem Header="Save" Click="Save_Click"/>
+                    <MenuItem Header="Exit" Click="Exit_Click"/>-->
+                </MenuItem>
+                <!--<MenuItem Header="Lease" Click="OpenLeaseWindow_Click"/>
+                <MenuItem Header="Tenant" Click="OpenTenantWindow_Click"/>
+                <MenuItem Header="Property" Click="OpenPropertyWindow_Click"/>-->
+            </Menu>
+
+            <!-- 状态栏 -->
+            <StatusBar DockPanel.Dock="Bottom">
+                <TextBlock Name="StatusBarText">Lease Information</TextBlock>
+            </StatusBar>
+
+            <!-- 主内容区域 -->
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 左侧ListView -->
+                <ListView Grid.Column="0" Name="listView" SelectionMode="Extended" SelectionChanged="ListView_SelectionChanged">
+                    <!-- ListView内容 -->
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="id" Width="30" DisplayMemberBinding="{Binding Lease.id}"/>
+                            <GridViewColumn Header="Address" Width="80" DisplayMemberBinding="{Binding Lease.address}"/>
+                            <GridViewColumn Header="Tenant" Width="80" DisplayMemberBinding="{Binding Lease.tenant}"/>
+                            <GridViewColumn Header="ExpiredDate" Width="80" DisplayMemberBinding="{Binding lease.expiredDate}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <!-- GridSplitter -->
+                <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
+
+                <!-- 右侧详细信息显示 -->
+                <StackPanel Grid.Column="2" Orientation="Vertical">
+                    <!-- 详细信息的展示，例如图片、地址等 -->
+                    <WrapPanel>
+                        <Label>id:</Label>
+                        <TextBox Name="txtId" Width="120"/>
+                    </WrapPanel>
+                    <WrapPanel Margin="0,20,0,0">
+                        <Label>Address:</Label>
+                        <TextBox x:Name="txtAddress" Width="120" Margin="10,0,0,0"/>
+                    </WrapPanel>
+                    <WrapPanel Margin="0,20,0,0">
+                        <Label>Tenant:</Label>
+                        <TextBox x:Name="txtStatus" Width="120" Margin="10,0,0,0"/>
+                    </WrapPanel>
+                    <WrapPanel Margin="0,20,0,0">
+                        <Label>Expired Date:</Label>
+                        <TextBox x:Name="txtExpiredDate" Width="120" Margin="10,0,0,0"/>
+                    </WrapPanel>
+                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="20">
+                        <Button Content="Add" Click="Add_Click" Width="107"/>
+                        <Button Content="Update" Click="Update_Click" Width="115"/>
+                        <Button Content="Delete" Click="Delete_Click" Width="103"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Window>
