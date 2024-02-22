@@ -78,6 +78,9 @@
     <Compile Include="leas.cs">
       <DependentUpon>AzureDbContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="View\LeaseWindow.xaml.cs">
+      <DependentUpon>LeaseWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="property.cs">
       <DependentUpon>AzureDbContext.tt</DependentUpon>
     </Compile>
@@ -85,9 +88,10 @@
       <DependentUpon>AzureDbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\LeaseViewModel.cs" />
-    <Compile Include="View\LeaseWindow.xaml.cs">
-      <DependentUpon>LeaseWindow.xaml</DependentUpon>
-    </Compile>
+    <Page Include="View\LeaseWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -110,10 +114,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\LeaseWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
