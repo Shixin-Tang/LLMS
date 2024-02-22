@@ -43,6 +43,13 @@
 3. Need assistance / figure things out
 - Learn how to create azure storage (watch videos)
 
+2024/02/22 Tang Shixin
+1. Done / not done since last scrum:
+- Create tables in Azure Database
+- Share the Azure database connection string
+- Create Azure storage
+2. To do until next Scrum:
+- save image to  Azure Blog Storage, get image URL, dispaly image via URL
 -------------------------------------------------------------------------------------------------------
 
 2024/02/21 Cao, Lisi
