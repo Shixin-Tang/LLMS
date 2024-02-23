@@ -34,7 +34,7 @@ namespace LLMS.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private testdb1Entities db = new testdb1Entities();
+        private testdb1Entities db;
 
         private string _propertyId;
         public string PropertyId
@@ -161,6 +161,7 @@ namespace LLMS.ViewModel
         {
             try
             {
+                db = new testdb1Entities();
                 AddCommand = new RelayCommand(Add, CanAdd);
                 UpdateCommand = new RelayCommand(Update, CanUpdate);
                 DeleteCommand = new RelayCommand(Delete, CanDelete);
