@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LLMS.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,10 +21,17 @@ namespace LLMS.View
     /// </summary>
     public partial class LeaseWindow : Window
     {
+        private testdb1Entities db = new testdb1Entities();
+
         public LeaseWindow()
         {
             InitializeComponent();
+            DataContext = new LeaseWindowViewModel();
+
+
         }
+
+       
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             // Handle Save button click
@@ -55,19 +63,6 @@ namespace LLMS.View
             // Handle selection change in ListView
         }
 
-        private void Add_Click(object sender, RoutedEventArgs e)
-        {
-            // Handle Add button click
-        }
-
-        private void Update_Click(object sender, RoutedEventArgs e)
-        {
-            // Handle Update button click
-        }
-
-        private void Delete_Click(object sender, RoutedEventArgs e)
-        {
-            // Handle Delete button click
-        }
+       
     }
 }

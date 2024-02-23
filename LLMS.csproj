@@ -87,7 +87,7 @@
     <Compile Include="tenant.cs">
       <DependentUpon>AzureDbContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\LeaseViewModel.cs" />
+    <Compile Include="ViewModel\LeaseWindowViewModel.cs" />
     <Page Include="View\LeaseWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
