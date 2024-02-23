@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using LLMS;
 
 namespace LLMS.ViewModel
 {
@@ -214,7 +213,7 @@ namespace LLMS.ViewModel
             try
             {
 
-     
+
 
                 // Create a new lease object
                 leas newLease = new leas
@@ -253,7 +252,7 @@ namespace LLMS.ViewModel
         }
 
         private bool CanUpdate(object parameter) => SelectedLease != null && SelectedLease.id > 0; // Implement your validation logic here
-        
+
         private void Update(object parameter)
         {
             string commandParameter = parameter as string;
@@ -284,7 +283,7 @@ namespace LLMS.ViewModel
         }
 
         private bool CanDelete(object parameter) => SelectedLease != null && SelectedLease.id > 0; // Implement your validation logic here
-        
+
         private void Delete(object parameter)
         {
             string commandParameter = parameter as string;

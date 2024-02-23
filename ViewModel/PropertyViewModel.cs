@@ -1,9 +1,6 @@
 ﻿using LLMS.Dto;
 using LLMS.Service;
-using Prism.Commands;
-using Prism.Mvvm;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 public class PropertyViewModel : BindableBase
 {
