@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LLMS.ViewModel"
-        xmlns:vm="clr-namespace:LLMS.ViewModel"
         mc:Ignorable="d"
         Title="Lease - Landlord Management System" Height="768" Width="1024">
     <Window.DataContext>
@@ -36,8 +35,8 @@
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
-                <ListView Grid.Column="0" Name="listView" SelectionMode="Extended" SelectionChanged="ListView_SelectionChanged">
-                    <!-- ListView content -->
+                <ListView Grid.Column="0" Name="listView" SelectionMode="Extended" SelectionChanged="ListView_SelectionChanged"
+                          ItemsSource="{Binding Leases}" SelectedItem="{Binding SelectedLease}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="ID" Width="30" DisplayMemberBinding="{Binding id}"/>
@@ -54,7 +53,6 @@
                             <GridViewColumn Header="Utility by Tenant" Width="120" DisplayMemberBinding="{Binding utility_by_tenant}"/>
                             <GridViewColumn Header="Renewal Term" Width="100" DisplayMemberBinding="{Binding renewal_term}"/>
                             <GridViewColumn Header="Early Terminate Condition" Width="150" DisplayMemberBinding="{Binding early_terminate_con}"/>
-                            <!-- Add columns for other properties as needed -->
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -89,33 +87,30 @@
                         <Label>Rent Amount:</Label>
                         <TextBox x:Name="txtRentAmount" Width="120" Margin="10,0,0,0" Text="{Binding ElementName=listView, Path=SelectedItem.rent_amount}"/>
                     </WrapPanel>
-                    <!-- Add UI elements for other properties -->
-                   
-    <WrapPanel Margin="0,20,0,0">
-        <Label>Lease Clauses:</Label>
-        <TextBox x:Name="txtLeaseClauses" Width="120" Margin="10,0,0,0" Text="{Binding ElementName=listView, Path=SelectedItem.lease_clauses}"/>
-    </WrapPanel>
-    <WrapPanel Margin="0,20,0,0">
-        <Label>Payment Due Day:</Label>
-        <TextBox x:Name="txtPaymentDueDay" Width="120" Margin="10,0,0,0" Text="{Binding ElementName=listView, Path=SelectedItem.payment_due_day}"/>
-    </WrapPanel>
-    <WrapPanel Margin="0,20,0,0">
-        <Label>Utility By Owner:</Label>
-        <TextBox x:Name="txtUtilityByOwner" Width="120" Margin="10,0,0,0" Text="{Binding ElementName=listView, Path=SelectedItem.utility_by_owner}"/>
-    </WrapPanel>
-    <WrapPanel Margin="0,20,0,0">
-        <Label>Utility By Tenant:</Label>
-        <TextBox x:Name="txtUtilityByTenant" Width="120" Margin="10,0,0,0" Text="{Binding ElementName=listView, Path=SelectedItem.utility_by_tenant}"/>
-    </WrapPanel>
-    <WrapPanel Margin="0,20,0,0">
-        <Label>Renewal Term:</Label>
-        <TextBox x:Name="txtRenewalTerm" Width="120" Margin="10,0,0,0" Text="{Binding ElementName=listView, Path=SelectedItem.renewal_term}"/>
-    </WrapPanel>
-    <WrapPanel Margin="0,20,0,0">
-        <Label>Early Terminate Condition:</Label>
-        <TextBox x:Name="txtEarlyTerminateCon" Width="120" Margin="10,0,0,0" Text="{Binding ElementName=listView, Path=SelectedItem.early_terminate_con}"/>
-    </WrapPanel>
-   
+                    <WrapPanel Margin="0,20,0,0">
+                        <Label>Lease Clauses:</Label>
+                        <TextBox x:Name="txtLeaseClauses" Width="120" Margin="10,0,0,0" Text="{Binding ElementName=listView, Path=SelectedItem.lease_clauses}"/>
+                    </WrapPanel>
+                    <WrapPanel Margin="0,20,0,0">
+                        <Label>Payment Due Day:</Label>
+                        <TextBox x:Name="txtPaymentDueDay" Width="120" Margin="10,0,0,0" Text="{Binding ElementName=listView, Path=SelectedItem.payment_due_day}"/>
+                    </WrapPanel>
+                    <WrapPanel Margin="0,20,0,0">
+                        <Label>Utility By Owner:</Label>
+                        <TextBox x:Name="txtUtilityByOwner" Width="120" Margin="10,0,0,0" Text="{Binding ElementName=listView, Path=SelectedItem.utility_by_owner}"/>
+                    </WrapPanel>
+                    <WrapPanel Margin="0,20,0,0">
+                        <Label>Utility By Tenant:</Label>
+                        <TextBox x:Name="txtUtilityByTenant" Width="120" Margin="10,0,0,0" Text="{Binding ElementName=listView, Path=SelectedItem.utility_by_tenant}"/>
+                    </WrapPanel>
+                    <WrapPanel Margin="0,20,0,0">
+                        <Label>Renewal Term:</Label>
+                        <TextBox x:Name="txtRenewalTerm" Width="120" Margin="10,0,0,0" Text="{Binding ElementName=listView, Path=SelectedItem.renewal_term}"/>
+                    </WrapPanel>
+                    <WrapPanel Margin="0,20,0,0">
+                        <Label>Early Terminate Condition:</Label>
+                        <TextBox x:Name="txtEarlyTerminateCon" Width="120" Margin="10,0,0,0" Text="{Binding ElementName=listView, Path=SelectedItem.early_terminate_con}"/>
+                    </WrapPanel>
                     <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="20">
                         <Button Content="Add" Command="{Binding AddCommand}" CommandParameter="Add" Width="107"/>
                         <Button Content="Update" Command="{Binding UpdateCommand}" CommandParameter="Update" Width="115"/>
@@ -126,3 +121,4 @@
         </DockPanel>
     </Grid>
 </Window>
+
