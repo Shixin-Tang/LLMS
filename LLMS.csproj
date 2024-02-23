@@ -78,6 +78,7 @@
     <Compile Include="leas.cs">
       <DependentUpon>AzureDbContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="View\LeaseWindow.xaml.cs">
       <DependentUpon>LeaseWindow.xaml</DependentUpon>
     </Compile>

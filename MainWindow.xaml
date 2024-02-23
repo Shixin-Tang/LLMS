@@ -5,41 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LLMS"
         mc:Ignorable="d"
-        Title="Home - Landlord Management System" Height="450" Width="800">
+        Title="Home - Landlord Management System" Height="768" Width="1024">
     <Grid>
         <DockPanel>
-            <!-- 顶部菜单和项目名 -->
+            <!-- top menu and ietm -->
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_MainMenu">
                     <MenuItem Header="Save" Click="Save_Click"/>
                     <MenuItem Header="Exit" Click="Exit_Click"/>
                 </MenuItem>
-                <MenuItem Header="Lease" Click="OpenLeaseWindow_Click"/>
-                <MenuItem Header="Tenant" Click="OpenTenantWindow_Click"/>
-                <MenuItem Header="Property" Click="OpenPropertyWindow_Click"/>
+                <MenuItem Header="Lease" Click="LeaseDetail_Click"/>
+                <MenuItem Header="Tenant" Click="TenantDetail_Click"/>
+                <MenuItem Header="Property" Click="PropertyDetail_Click"/>
             </Menu>
 
-            <!-- 状态栏 -->
+            <!-- status bar -->
             <StatusBar DockPanel.Dock="Bottom">
                 <TextBlock Name="StatusBarText">Property Preview</TextBlock>
             </StatusBar>
 
-            <!-- 主内容区域 -->
+            <!-- main area -->
             <Grid Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="5"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- 左侧ListView -->
+                <!-- left side ListView -->
                 <ListView Grid.Column="0" Name="listView" SelectionMode="Extended" SelectionChanged="ListView_SelectionChanged">
-                    <!-- ListView内容 -->
+                    <!-- ListView content -->
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="id" Width="30" DisplayMemberBinding="{Binding Property.id}"/>
-                            <GridViewColumn Header="Address" Width="80" DisplayMemberBinding="{Binding Property.address}"/>
-                            <GridViewColumn Header="Status" Width="80" DisplayMemberBinding="{Binding Property.status}"/>
+                            <GridViewColumn Header="Lease ID" DisplayMemberBinding="{Binding LeaseId}" Width="100"/>
+                            <GridViewColumn Header="Payment Due Day" DisplayMemberBinding="{Binding PaymentDueDay}" Width="120"/>
+                            <GridViewColumn Header="Rent Amount" DisplayMemberBinding="{Binding RentAmount}" Width="100"/>
+                            <GridViewColumn Header="Address" DisplayMemberBinding="{Binding Address}" Width="200"/>
+                            <GridViewColumn Header="Tenant Name" DisplayMemberBinding="{Binding TenantName}" Width="150"/>
+                            <GridViewColumn Header="Phone No" DisplayMemberBinding="{Binding PhoneNo}" Width="150"/>
+                            <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}" Width="200"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -47,31 +51,53 @@
                 <!-- GridSplitter -->
                 <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
 
-                <!-- 右侧详细信息显示 -->
+                <!-- right side detail information -->
                 <StackPanel Grid.Column="2" Orientation="Vertical">
-                    <!-- 详细信息的展示，例如图片、地址等 -->
-                    <!-- 显示图片 -->
-                    <Image Name="imageDisplay" Height="100" Width="160" Margin="5"/>
-                    <WrapPanel>
-                        <Label>id:</Label>
-                        <TextBox Name="txtId" Width="120"/>
-                    </WrapPanel>
+                    <!-- display image -->
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Top" Height="200" Width="300" Background="LightGray" Margin="0,20">
+                        <Image Name="imageDisplay" Stretch="Uniform"/>
+                    </Border>
+
+                    <!-- display address -->
                     <WrapPanel Margin="0,20,0,0">
-                        <Label>Address:</Label>
-                        <TextBox x:Name="txtAddress" Width="120" Margin="10,0,0,0"/>
+                        <Label Content="Address:" VerticalAlignment="Center"/>
+                        <Label x:Name="lblAddress" Width="200" Margin="10,0" />
                     </WrapPanel>
+
+                    <!-- display tenant name -->
                     <WrapPanel Margin="0,20,0,0">
-                        <Label>Status:</Label>
-                        <TextBox x:Name="txtStatus" Width="120" Margin="10,0,0,0"/>
+                        <Label Content="Tenant Name:" VerticalAlignment="Center"/>
+                        <Label x:Name="lblTenantName" Width="200" Margin="10,0" />
                     </WrapPanel>
+
+                    <!-- display phone no -->
                     <WrapPanel Margin="0,20,0,0">
-                        <Label>Expired Date:</Label>
-                        <TextBox x:Name="txtExpiredDate" Width="120" Margin="10,0,0,0"/>
+                        <Label Content="Phone No:" VerticalAlignment="Center"/>
+                        <Label x:Name="lblPhoneNo" Width="200" Margin="10,0" />
                     </WrapPanel>
-                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="20">
-                        <Button Content="Lease Detail" Click="LeaseDetail_Click" Width="107"/>
-                        <Button Content="Tenant Detail" Click="TenantDetail_Click" Width="115"/>
-                        <Button Content="Property Detail" Click="PropertyDetail_Click" Width="103"/>
+
+                    <!-- display Email -->
+                    <WrapPanel Margin="0,20,0,0">
+                        <Label Content="Email:" VerticalAlignment="Center"/>
+                        <Label x:Name="lblEmail" Width="200" Margin="10,0" />
+                    </WrapPanel>
+
+                    <!-- display emergency name -->
+                    <WrapPanel Margin="0,20,0,0">
+                        <Label Content="Emergency Contact Name:" VerticalAlignment="Center"/>
+                        <Label x:Name="lblEmergencyContactName" Width="200" Margin="10,0" />
+                    </WrapPanel>
+
+                    <!-- display emergency phone no -->
+                    <WrapPanel Margin="0,20,0,0">
+                        <Label Content="Emergency Contact Number:" VerticalAlignment="Center"/>
+                        <Label x:Name="lblEmergencyContactNo" Width="200" Margin="10,0" />
+                    </WrapPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30">
+                        <Button Content="Lease Detail" Click="LeaseDetail_Click" Width="120" Margin="5"/>
+                        <Button Content="Tenant Detail" Click="TenantDetail_Click" Width="120" Margin="5"/>
+                        <Button Content="Property Detail" Click="PropertyDetail_Click" Width="120" Margin="5"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>
