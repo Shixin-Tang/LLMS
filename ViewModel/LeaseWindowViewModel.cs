@@ -34,7 +34,7 @@ namespace LLMS.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private testdb1Entities _db = new testdb1Entities();
+        private testdb1Entities db = new testdb1Entities();
 
         private string _propertyId;
         public string PropertyId
@@ -159,16 +159,23 @@ namespace LLMS.ViewModel
 
         public LeaseWindowViewModel()
         {
-            AddCommand = new RelayCommand(Add, CanAdd);
-            UpdateCommand = new RelayCommand(Update, CanUpdate);
-            DeleteCommand = new RelayCommand(Delete, CanDelete);
+            try
+            {
+                AddCommand = new RelayCommand(Add, CanAdd);
+                UpdateCommand = new RelayCommand(Update, CanUpdate);
+                DeleteCommand = new RelayCommand(Delete, CanDelete);
 
-            LoadLeaseData();
+                LoadLeaseData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading lease data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
-        private void LoadLeaseData()
+        public void LoadLeaseData()
         {
-            Leases = new ObservableCollection<leas>(_db.leases.ToList());
+            Leases = new ObservableCollection<leas>(db.leases.ToList());
         }
 
         private ObservableCollection<leas> _leases;
@@ -228,10 +235,10 @@ namespace LLMS.ViewModel
                 };
 
                 // Add the new lease to the database context
-                _db.leases.Add(newLease);
+                db.leases.Add(newLease);
 
                 // Save changes to the database
-                _db.SaveChanges();
+                db.SaveChanges();
 
                 // Reload lease data
                 LoadLeaseData();
@@ -257,7 +264,7 @@ namespace LLMS.ViewModel
                     // Update properties of the selected lease
 
                     // Save changes to the database
-                    _db.SaveChanges();
+                    db.SaveChanges();
 
                     // Reload lease data
                     LoadLeaseData();
@@ -288,10 +295,10 @@ namespace LLMS.ViewModel
                     if (result == MessageBoxResult.Yes)
                     {
                         // Remove the selected lease from the database context
-                        _db.leases.Remove(SelectedLease);
+                        db.leases.Remove(SelectedLease);
 
                         // Save changes to the database
-                        _db.SaveChanges();
+                        db.SaveChanges();
 
                         // Reload lease data
                         LoadLeaseData();

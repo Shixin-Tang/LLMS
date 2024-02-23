@@ -22,16 +22,20 @@ namespace LLMS.View
     public partial class LeaseWindow : Window
     {
         private testdb1Entities db = new testdb1Entities();
+        private LeaseWindowViewModel _viewModel;
 
         public LeaseWindow()
         {
             InitializeComponent();
-            DataContext = new LeaseWindowViewModel();
+            _viewModel = new LeaseWindowViewModel();
+            this.DataContext = _viewModel;
+
+
 
 
         }
 
-       
+     
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             // Handle Save button click
@@ -60,9 +64,11 @@ namespace LLMS.View
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Handle selection change in ListView
+            
         }
 
-       
+        
+     
+
     }
 }
