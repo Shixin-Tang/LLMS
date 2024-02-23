@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -83,6 +83,12 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Unity.Abstractions, Version=5.11.7.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>packages\Unity.5.11.10\lib\net48\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.11.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>packages\Unity.5.11.10\lib\net48\Unity.Container.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -97,13 +103,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AzureDbContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Dto\PropertyDto.cs" />
     <Compile Include="image.cs">
       <DependentUpon>AzureDbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="leas.cs">
       <DependentUpon>AzureDbContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Service\IImageService.cs" />
+    <Compile Include="Service\ImageService.cs" />
+    <Compile Include="Service\IPropertyService.cs" />
+    <Compile Include="Service\PropertyService.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\PropertyViewModel.cs" />
     <Compile Include="View\LeaseWindow.xaml.cs">
       <DependentUpon>LeaseWindow.xaml</DependentUpon>
     </Compile>
@@ -114,6 +126,9 @@
       <DependentUpon>AzureDbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\LeaseWindowViewModel.cs" />
+    <Compile Include="View\PropertyView.xaml.cs">
+      <DependentUpon>PropertyView.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\LeaseWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -140,6 +155,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\PropertyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

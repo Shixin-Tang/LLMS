@@ -1,4 +1,5 @@
-﻿using dotenv.net;
+using dotenv.net;
+using LLMS.Service;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using Unity;
 using System.IO;
 
 namespace LLMS
@@ -14,12 +16,14 @@ namespace LLMS
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
+    /// 
     public partial class App : Application
     {
+        private IUnityContainer _container;
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
             // get the complete path of the .exe file
             string exePath = Assembly.GetExecutingAssembly().Location;
 
@@ -47,6 +51,20 @@ namespace LLMS
             //MessageBox.Show($"BlobConnectionString: {blobconnectionString}", "Environment Variable", MessageBoxButton.OK, MessageBoxImage.Information);
             //MessageBox.Show($"containerName: {containerName}", "Environment Variable", MessageBoxButton.OK, MessageBoxImage.Information);
 
+
+            _container = new UnityContainer();
+            ConfigureContainer();
+
+            var mainWindow = _container.Resolve<MainWindow>();
+            mainWindow.Show();
+        }
+
+        private void ConfigureContainer()
+        {
+            _container.RegisterType<IPropertyService, PropertyService>();
+            _container.RegisterType<IImageService, ImageService>();
+
+            _container.RegisterType<PropertyViewModel>();
         }
     }
 }
