@@ -13,5 +13,6 @@ namespace LLMS.View
             InitializeComponent();
             this.DataContext = new PropertyViewModel(propertyService, imageService);
         }
+
     }
 }

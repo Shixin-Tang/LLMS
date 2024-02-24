@@ -20,8 +20,9 @@ namespace LLMS.Service
 
         public Task<string> UploadImageAsync(Stream imageStream, string imageName)
         {
-            // 返回模拟的 image URL
-            return Task.FromResult("https://example.com/mock-image-url"); // 返回一个模拟的图片 URL
+            // 模拟逻辑：返回一个固定的或随机生成的URL，代表图片已上传
+            // 这里返回一个示例URL，请根据实际情况替换或生成
+            return Task.FromResult("https://example.com/images/" + imageName);
         }
     }
 }

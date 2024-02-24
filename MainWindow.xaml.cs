@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-// using Unity;
+using Unity;
 
 namespace LLMS
 {
@@ -21,17 +21,35 @@ namespace LLMS
 
         // Define AzureDbContext object
         private testdb1Entities db = new testdb1Entities();
-        // private readonly IUnityContainer _container;
-        public MainWindow()
+        private readonly IUnityContainer _container;
+
+        public MainWindow(IUnityContainer container)
         {
-            InitializeComponent();
-
-            this.Loaded += Window_Loaded;
-
-            // Initialize LeaseWindow object
-            //leaseWindow = new LeaseWindow();
-            // _container = container;
+            try
+            {
+                InitializeComponent();
+                _container = container;
+                this.Loaded += Window_Loaded;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred during MainWindow initialization: {ex.Message}");
+            }
         }
+
+        private void PropertyDetail_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var propertyView = _container.Resolve<PropertyView>();
+                propertyView.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+        }
+
 
         public void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -93,19 +111,6 @@ namespace LLMS
             // Handle Tenant Detail button click
             //TenantWindow tenantWindow = new TenantWindow();
             //tenantWindow.ShowDialog();
-        }
-
-        private void PropertyDetail_Click(object sender, RoutedEventArgs e)
-        {
-            // Handle Property Detail button click
-            //PropertyWindow propertyWindow = new PropertyWindow();
-            //propertyWindow.ShowDialog();
-            //var propertyService = _container.Resolve<IPropertyService>();
-            //var imageService = _container.Resolve<IImageService>();
-
-           // var propertyView = new PropertyView(propertyService, imageService);
-
-           // propertyView.Show();
         }
 
         private void LoadMainWindow()

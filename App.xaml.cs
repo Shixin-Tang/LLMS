@@ -1,4 +1,5 @@
 using LLMS.Service;
+using LLMS.View;
 using System.Windows;
 using Unity;
 
@@ -6,7 +7,7 @@ namespace LLMS
 {
     public partial class App : Application
     {
-        private IUnityContainer _container;
+        private IUnityContainer _container = new UnityContainer();
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -14,17 +15,16 @@ namespace LLMS
 
             _container = new UnityContainer();
             ConfigureContainer();
-
+            
             var mainWindow = _container.Resolve<MainWindow>();
             mainWindow.Show();
         }
 
         private void ConfigureContainer()
         {
-            _container.RegisterType<IPropertyService, PropertyService>();
             _container.RegisterType<IImageService, ImageService>();
-
-            // 注册 MainWindow，以便能够通过容器解析
+            _container.RegisterType<IPropertyService, PropertyService>();
+            _container.RegisterType<PropertyView>();
             _container.RegisterType<MainWindow>();
         }
     }
