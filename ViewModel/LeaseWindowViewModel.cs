@@ -35,133 +35,12 @@ namespace LLMS.ViewModel
 
         private testdb1Entities db;
 
-        private string _propertyId;
-        public string PropertyId
-        {
-            get { return _propertyId; }
-            set
-            {
-                _propertyId = value;
-                OnPropertyChanged(nameof(PropertyId));
-            }
-        }
-
-        private string _tenantId;
-        public string TenantId
-        {
-            get { return _tenantId; }
-            set
-            {
-                _tenantId = value;
-                OnPropertyChanged(nameof(TenantId));
-            }
-        }
-
-        private string _startDate;
-        public string StartDate
-        {
-            get { return _startDate; }
-            set
-            {
-                _startDate = value;
-                OnPropertyChanged(nameof(StartDate));
-            }
-        }
-
-        private string _endDate;
-        public string EndDate
-        {
-            get { return _endDate; }
-            set
-            {
-                _endDate = value;
-                OnPropertyChanged(nameof(EndDate));
-            }
-        }
-
-        private string _rentAmount;
-        public string RentAmount
-        {
-            get { return _rentAmount; }
-            set
-            {
-                _rentAmount = value;
-                OnPropertyChanged(nameof(RentAmount));
-            }
-        }
-
-        private string _leaseClauses;
-        public string LeaseClauses
-        {
-            get { return _leaseClauses; }
-            set
-            {
-                _leaseClauses = value;
-                OnPropertyChanged(nameof(LeaseClauses));
-            }
-        }
-
-        private string _paymentDueDay;
-        public string PaymentDueDay
-        {
-            get { return _paymentDueDay; }
-            set
-            {
-                _paymentDueDay = value;
-                OnPropertyChanged(nameof(PaymentDueDay));
-            }
-        }
-
-        private string _utilityByOwner;
-        public string UtilityByOwner
-        {
-            get { return _utilityByOwner; }
-            set
-            {
-                _utilityByOwner = value;
-                OnPropertyChanged(nameof(UtilityByOwner));
-            }
-        }
-
-        private string _utilityByTenant;
-        public string UtilityByTenant
-        {
-            get { return _utilityByTenant; }
-            set
-            {
-                _utilityByTenant = value;
-                OnPropertyChanged(nameof(UtilityByTenant));
-            }
-        }
-
-        private string _renewalTerm;
-        public string RenewalTerm
-        {
-            get { return _renewalTerm; }
-            set
-            {
-                _renewalTerm = value;
-                OnPropertyChanged(nameof(RenewalTerm));
-            }
-        }
-
-        private string _earlyTerminateCon;
-        public string EarlyTerminateCon
-        {
-            get { return _earlyTerminateCon; }
-            set
-            {
-                _earlyTerminateCon = value;
-                OnPropertyChanged(nameof(EarlyTerminateCon));
-            }
-        }
-
         public LeaseWindowViewModel()
         {
             try
             {
                 db = new testdb1Entities();
-                AddCommand = new RelayCommand(Add, CanAdd);
+                AddCommand = new RelayCommand(Add);
                 UpdateCommand = new RelayCommand(Update, CanUpdate);
                 DeleteCommand = new RelayCommand(Delete, CanDelete);
 
@@ -197,6 +76,162 @@ namespace LLMS.ViewModel
             {
                 _selectedLease = value;
                 OnPropertyChanged(nameof(SelectedLease));
+
+                // Update text box bindings when a new item is selected
+                OnPropertyChanged(nameof(PropertyId));
+                OnPropertyChanged(nameof(TenantId));
+                OnPropertyChanged(nameof(StartDate));
+                OnPropertyChanged(nameof(EndDate));
+                OnPropertyChanged(nameof(RentAmount));
+                OnPropertyChanged(nameof(LeaseClauses));
+                OnPropertyChanged(nameof(PaymentDueDay));
+                OnPropertyChanged(nameof(UtilityByOwner));
+                OnPropertyChanged(nameof(UtilityByTenant));
+                OnPropertyChanged(nameof(RenewalTerm));
+                OnPropertyChanged(nameof(EarlyTerminateCon));
+            }
+        }
+
+        public string PropertyId
+        {
+            get { return SelectedLease?.property_id.ToString(); }
+            set
+            {
+                if (SelectedLease != null && int.TryParse(value, out int result))
+                {
+                    SelectedLease.property_id = result;
+                    OnPropertyChanged(nameof(PropertyId));
+                }
+            }
+        }
+
+        public string TenantId
+        {
+            get { return SelectedLease?.tenant_id.ToString(); }
+            set
+            {
+                if (SelectedLease != null && int.TryParse(value, out int result))
+                {
+                    SelectedLease.tenant_id = result;
+                    OnPropertyChanged(nameof(TenantId));
+                }
+            }
+        }
+
+        public string StartDate
+        {
+            get { return SelectedLease?.start_date.ToString(); }
+            set
+            {
+                if (SelectedLease != null && DateTime.TryParse(value, out DateTime result))
+                {
+                    SelectedLease.start_date = result;
+                    OnPropertyChanged(nameof(StartDate));
+                }
+            }
+        }
+
+        public string EndDate
+        {
+            get { return SelectedLease?.end_date.ToString(); }
+            set
+            {
+                if (SelectedLease != null && DateTime.TryParse(value, out DateTime result))
+                {
+                    SelectedLease.end_date = result;
+                    OnPropertyChanged(nameof(EndDate));
+                }
+            }
+        }
+
+        public string RentAmount
+        {
+            get { return SelectedLease?.rent_amount.ToString(); }
+            set
+            {
+                if (SelectedLease != null && decimal.TryParse(value, out decimal result))
+                {
+                    SelectedLease.rent_amount = result;
+                    OnPropertyChanged(nameof(RentAmount));
+                }
+            }
+        }
+
+        public string LeaseClauses
+        {
+            get { return SelectedLease?.lease_clauses; }
+            set
+            {
+                if (SelectedLease != null)
+                {
+                    SelectedLease.lease_clauses = value;
+                    OnPropertyChanged(nameof(LeaseClauses));
+                }
+            }
+        }
+
+        public string PaymentDueDay
+        {
+            get { return SelectedLease?.payment_due_day.ToString(); }
+            set
+            {
+                if (SelectedLease != null && int.TryParse(value, out int result))
+                {
+                    SelectedLease.payment_due_day = result;
+                    OnPropertyChanged(nameof(PaymentDueDay));
+                }
+            }
+        }
+
+        public string UtilityByOwner
+        {
+            get { return SelectedLease?.utility_by_owner; }
+            set
+            {
+                if (SelectedLease != null)
+                {
+                    SelectedLease.utility_by_owner = value;
+                    OnPropertyChanged(nameof(UtilityByOwner));
+                }
+            }
+        }
+
+        public string UtilityByTenant
+        {
+            get { return SelectedLease?.utility_by_tenant; }
+            set
+            {
+                if (SelectedLease != null)
+                {
+                    SelectedLease.utility_by_tenant = value;
+                    OnPropertyChanged(nameof(UtilityByTenant));
+                }
+            }
+        }
+
+        public string RenewalTerm
+        {
+            get { return SelectedLease?.renewal_term; }
+            set
+            {
+                if (SelectedLease != null)
+                {
+                    SelectedLease.renewal_term = value;
+                    OnPropertyChanged(nameof(RenewalTerm));
+                }
+            }
+        }
+
+        public string EarlyTerminateCon
+        {
+            get { return SelectedLease?.early_terminate_con; }
+            set
+            {
+                if (SelectedLease != null)
+                {
+                    SelectedLease.early_terminate_con = value;
+                    OnPropertyChanged(nameof(EarlyTerminateCon));
+                }
             }
         }
 
@@ -204,45 +239,22 @@ namespace LLMS.ViewModel
         public ICommand UpdateCommand { get; }
         public ICommand DeleteCommand { get; }
 
-        private bool CanAdd(object parameter) => true; // Implement your validation logic here
+        private bool CanUpdate(object parameter) => SelectedLease != null;
 
         private void Add(object parameter)
         {
-            string commandParameter = parameter as string;
-            // Now you can use the commandParameter value as needed
             try
             {
-
-
-
-                // Create a new lease object
                 leas newLease = new leas
                 {
-                    // Populate properties from the UI
-                    property_id = 0, // Set to appropriate value
-                    tenant_id = 0, // Set to appropriate value
-                    start_date = DateTime.Now, // Set to appropriate value
-                    end_date = DateTime.Now, // Set to appropriate value
-                    rent_amount = 0, // Set to appropriate value
-                    created_at = DateTime.Now,
-                    lease_clauses = "Sample clauses", // Set to appropriate value
-                    payment_due_day = 1, // Set to appropriate value
-                    utility_by_owner = "Sample utility", // Set to appropriate value
-                    utility_by_tenant = "Sample tenant utility", // Set to appropriate value
-                    renewal_term = "Sample renewal term", // Set to appropriate value
-                    early_terminate_con = "Sample termination condition" // Set to appropriate value
-                    // Populate other properties as needed
+                    // Initialize properties from text boxes
+                    // Assuming validation is done on UI before adding
                 };
 
-                // Add the new lease to the database context
                 db.leases.Add(newLease);
-
-                // Save changes to the database
                 db.SaveChanges();
 
-                // Reload lease data
                 LoadLeaseData();
-
                 MessageBox.Show("Lease added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
@@ -251,30 +263,13 @@ namespace LLMS.ViewModel
             }
         }
 
-        private bool CanUpdate(object parameter) => SelectedLease != null && SelectedLease.id > 0; // Implement your validation logic here
-
         private void Update(object parameter)
         {
-            string commandParameter = parameter as string;
-
             try
             {
-                if (SelectedLease != null)
-                {
-                    // Update properties of the selected lease
-
-                    // Save changes to the database
-                    db.SaveChanges();
-
-                    // Reload lease data
-                    LoadLeaseData();
-
-                    MessageBox.Show("Lease updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
-                {
-                    MessageBox.Show("Please select a lease to update.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
+                db.SaveChanges();
+                LoadLeaseData();
+                MessageBox.Show("Lease updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
@@ -282,42 +277,23 @@ namespace LLMS.ViewModel
             }
         }
 
-        private bool CanDelete(object parameter) => SelectedLease != null && SelectedLease.id > 0; // Implement your validation logic here
+
+        private bool CanDelete(object parameter) => SelectedLease != null;
 
         private void Delete(object parameter)
         {
-            string commandParameter = parameter as string;
             try
             {
-                if (SelectedLease != null)
-                {
-                    MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this lease?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        // Remove the selected lease from the database context
-                        db.leases.Remove(SelectedLease);
-
-                        // Save changes to the database
-                        db.SaveChanges();
-
-                        // Reload lease data
-                        LoadLeaseData();
-
-                        MessageBox.Show("Lease deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Please select a lease to delete.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
+                db.leases.Remove(SelectedLease);
+                db.SaveChanges();
+                LoadLeaseData();
+                MessageBox.Show("Lease deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error deleting lease: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-
 
         protected void OnPropertyChanged(string propertyName)
         {
