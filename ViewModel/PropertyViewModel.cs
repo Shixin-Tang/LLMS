@@ -1,4 +1,4 @@
-﻿using LLMS.Dto;
+using LLMS.Dto;
 using LLMS.Service;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -32,6 +32,7 @@ public class PropertyViewModel : BindableBase
 
         LoadPropertiesAsync();
     }
+
 
     private bool CanExecuteUploadImage()
     {

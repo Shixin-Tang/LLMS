@@ -12,9 +12,12 @@ namespace LLMS
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            _container = new UnityContainer();
             ConfigureContainer();
-                var mainWindow = _container.Resolve<MainWindow>();
-                mainWindow.Show();
+            
+            var mainWindow = _container.Resolve<MainWindow>();
+            mainWindow.Show();
         }
 
         private void ConfigureContainer()
@@ -23,7 +26,7 @@ namespace LLMS
             _container.RegisterType<IPropertyService, PropertyService>();
             _container.RegisterType<PropertyView>();
             _container.RegisterType<MainWindow>();
-
         }
     }
 }
+

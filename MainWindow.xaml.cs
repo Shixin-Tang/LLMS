@@ -113,19 +113,6 @@ namespace LLMS
             //tenantWindow.ShowDialog();
         }
 
-        //private void PropertyDetail_Click(object sender, RoutedEventArgs e)
-        //{
-        //    // Handle Property Detail button click
-        //    //PropertyWindow propertyWindow = new PropertyWindow();
-        //    //propertyWindow.ShowDialog();
-        //    //var propertyService = _container.Resolve<IPropertyService>();
-        //    //var imageService = _container.Resolve<IImageService>();
-
-        //   // var propertyView = new PropertyView(propertyService, imageService);
-
-        //   // propertyView.Show();
-        //}
-
         private void LoadMainWindow()
         {
             var MainWindowViewModels = db.leases.Select(lease => new MainWindowViewModel
