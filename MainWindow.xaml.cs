@@ -2,6 +2,7 @@
 using LLMS.View;
 using LLMS.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,6 +18,8 @@ namespace LLMS
     {
         // Define LeaseWindow object
         //private LeaseWindow leaseWindow;
+
+        private List<MainWindowViewModel> originalItemsList = new List<MainWindowViewModel>();
 
 
         // Define AzureDbContext object
@@ -115,7 +118,7 @@ namespace LLMS
 
         private void LoadMainWindow()
         {
-            var MainWindowViewModels = db.leases.Select(lease => new MainWindowViewModel
+            originalItemsList = db.leases.Select(lease => new MainWindowViewModel
             {
                 LeaseId = lease.id,
                 PaymentDueDay = lease.payment_due_day,
@@ -129,12 +132,12 @@ namespace LLMS
                 EmergencyContactNo = lease.tenant.emergency_contact_number
             }).ToList();
 
-            listView.ItemsSource = MainWindowViewModels;
+            listView.ItemsSource = originalItemsList;
 
             // default select the first item in the list
             if (listView.Items.Count > 0)
             {
-                listView.SelectedItem = MainWindowViewModels[0];
+                listView.SelectedItem = originalItemsList[0];
             }
         }
 
@@ -149,6 +152,39 @@ namespace LLMS
             //update image URL
             imageDisplay.Source = new BitmapImage(new Uri(lease.ImageUrl, UriKind.Absolute));
         }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = Tbxsearch.Text.ToLower();
+            var filteredItems = originalItemsList.Where(item => item.Address.ToLower().Contains(searchText) || item.TenantName.ToLower().Contains(searchText)).ToList();
+
+            if (filteredItems.Any())
+            {
+                listView.ItemsSource = filteredItems;
+                listView.SelectedItem = filteredItems[0];
+            }
+            else
+            {
+                MessageBox.Show("No matching content found.", "Search Result", MessageBoxButton.OK, MessageBoxImage.Information);
+                listView.ItemsSource = originalItemsList; // Optionally reset the list or keep it filtered
+            }
+        }
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            // reset the search textbox
+            Tbxsearch.Text = string.Empty;
+
+            // reset the listview to the original list
+            listView.ItemsSource = originalItemsList;
+
+            // reset the selected item to the first item in the list
+            if (originalItemsList.Any())
+            {
+                listView.SelectedItem = originalItemsList[0];
+            }
+        }
+
 
     }
 }
