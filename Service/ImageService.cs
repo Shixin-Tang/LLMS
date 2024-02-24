@@ -6,19 +6,22 @@ namespace LLMS.Service
 {
     internal class ImageService : IImageService
     {
-        Task<int?> IImageService.GetImageIdByUrlAsync(string imageUrl)
+        public Task<int?> GetImageIdByUrlAsync(string imageUrl)
         {
-            throw new NotImplementedException();
+            // 返回模拟的 image ID 或 null
+            return Task.FromResult<int?>(null); // 假设找不到对应的 image ID
         }
 
-        Task<string> IImageService.GetImageUrlByIdAsync(int imageId)
+        public Task<string> GetImageUrlByIdAsync(int imageId)
         {
-            throw new NotImplementedException();
+            // 返回模拟的 image URL 或 null
+            return Task.FromResult<string>(null); // 假设找不到对应的 image URL
         }
 
-        Task<string> IImageService.UploadImageAsync(Stream imageStream, string imageName)
+        public Task<string> UploadImageAsync(Stream imageStream, string imageName)
         {
-            throw new NotImplementedException();
+            // 返回模拟的 image URL
+            return Task.FromResult("https://example.com/mock-image-url"); // 返回一个模拟的图片 URL
         }
     }
 }

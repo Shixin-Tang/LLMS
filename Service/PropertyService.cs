@@ -11,13 +11,12 @@ namespace LLMS.Service
 {
     internal class PropertyService : IPropertyService
     {
-        // Import IImageService
-        private IImageService _imageService;
+        private readonly IImageService _imageService;
 
-        // Constructor
-        public PropertyService()
+        // 通过构造函数注入 IImageService
+        public PropertyService(IImageService imageService)
         {
-            _imageService = new ImageService();
+            _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
         }
 
         /*--- CRUD ---*/

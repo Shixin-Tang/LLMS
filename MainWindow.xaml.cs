@@ -1,10 +1,12 @@
-﻿using LLMS.View;
+﻿using LLMS.Service;
+using LLMS.View;
 using LLMS.ViewModel;
 using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+// using Unity;
 
 namespace LLMS
 {
@@ -16,9 +18,10 @@ namespace LLMS
         // Define LeaseWindow object
         //private LeaseWindow leaseWindow;
 
+
         // Define AzureDbContext object
         private testdb1Entities db = new testdb1Entities();
-
+        // private readonly IUnityContainer _container;
         public MainWindow()
         {
             InitializeComponent();
@@ -27,6 +30,7 @@ namespace LLMS
 
             // Initialize LeaseWindow object
             //leaseWindow = new LeaseWindow();
+            // _container = container;
         }
 
         public void Window_Loaded(object sender, RoutedEventArgs e)
@@ -61,10 +65,12 @@ namespace LLMS
             // Handle opening Tenant window
         }*/
 
-        /*private void OpenPropertyWindow_Click(object sender, RoutedEventArgs e)
+       /* private void OpenPropertyView_Click(object sender, RoutedEventArgs e)
         {
-            // Handle opening Property window
-        }*/
+
+        }
+       */
+
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -94,6 +100,12 @@ namespace LLMS
             // Handle Property Detail button click
             //PropertyWindow propertyWindow = new PropertyWindow();
             //propertyWindow.ShowDialog();
+            //var propertyService = _container.Resolve<IPropertyService>();
+            //var imageService = _container.Resolve<IImageService>();
+
+           // var propertyView = new PropertyView(propertyService, imageService);
+
+           // propertyView.Show();
         }
 
         private void LoadMainWindow()
