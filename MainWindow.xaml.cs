@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-// using Unity;
+using Unity;
 
 namespace LLMS
 {
@@ -25,16 +25,31 @@ namespace LLMS
 
         public MainWindow(IUnityContainer container)
         {
-            InitializeComponent();
-            _container = container;
-            this.Loaded += Window_Loaded;
+            try
+            {
+                InitializeComponent();
+                _container = container;
+                this.Loaded += Window_Loaded;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred during MainWindow initialization: {ex.Message}");
+            }
         }
 
         private void PropertyDetail_Click(object sender, RoutedEventArgs e)
         {
-            var propertyView = _container.Resolve<PropertyView>();
-            propertyView.Show();
+            try
+            {
+                var propertyView = _container.Resolve<PropertyView>();
+                propertyView.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
         }
+
 
         public void Window_Loaded(object sender, RoutedEventArgs e)
         {
