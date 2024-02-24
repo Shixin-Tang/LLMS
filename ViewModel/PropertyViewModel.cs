@@ -2,8 +2,9 @@
 using LLMS.Service;
 using Prism.Commands;
 using Prism.Mvvm;
+using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
 public class PropertyViewModel : BindableBase
 {
@@ -33,11 +34,13 @@ public class PropertyViewModel : BindableBase
         _propertyService = propertyService;
         _imageService = imageService;
 
+        Properties = new ObservableCollection<PropertyDto>();
+
         UploadImageCommand = new DelegateCommand(ExecuteUploadImage, CanExecuteUploadImage);
 
-        // 加载属性列表
         LoadPropertiesAsync();
     }
+
 
     private bool CanExecuteUploadImage()
     {
@@ -58,9 +61,11 @@ public class PropertyViewModel : BindableBase
             var properties = await _propertyService.GetAllPropertiesAsync();
             Properties = new ObservableCollection<PropertyDto>(properties);
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
-            // handle exception, e.g., log the error or show a message to the user
+            // 在这里处理异常，例如记录日志或显示错误消息
+            Debug.WriteLine($"load property load error: {e.Message}");
         }
     }
+
 }

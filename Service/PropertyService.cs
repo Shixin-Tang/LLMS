@@ -5,20 +5,18 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LLMS.Service
 {
     internal class PropertyService : IPropertyService
     {
-        // Import IImageService
-        private IImageService _imageService;
+        private readonly IImageService _imageService;
 
-        // Constructor
-        public PropertyService()
+        // 通过构造函数注入 IImageService
+        public PropertyService(IImageService imageService)
         {
-            _imageService = new ImageService();
+            _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
         }
 
         /*--- CRUD ---*/
@@ -33,7 +31,8 @@ namespace LLMS.Service
                     await context.SaveChangesAsync();
                     return await MapToDtoAsync(propertyEntity);
                 }
-            }catch (DbUpdateException ex)
+            }
+            catch (DbUpdateException ex)
             {
                 // Database Update Exception
                 Trace.TraceError($"DbUpdateException in CreatePropertyAsync: {ex.Message}");
@@ -66,17 +65,18 @@ namespace LLMS.Service
                     }
                     return false;
                 }
-            }catch (DbUpdateException ex)
+            }
+            catch (DbUpdateException ex)
             {
                 // Database Update Exception
                 Trace.TraceError($"DbUpdateException in DeletePropertyAsync: {ex.Message}");
                 throw new ApplicationException("An error occurred while accessing the database.");
-    }
+            }
             catch (InvalidOperationException ex)
             {
                 Trace.TraceError($"InvalidOperationException in DeletePropertyAsync: {ex.Message}");
                 throw new ApplicationException("An invalid operation was attempted.");
-}
+            }
             catch (Exception ex)
             {
                 Trace.TraceError($"Exception in DeletePropertyAsync: {ex.Message}");
@@ -145,7 +145,7 @@ namespace LLMS.Service
             {
                 Trace.TraceError($"Exception in GetPropertyByIdAsync: {ex.Message}");
                 throw new ApplicationException("An unexpected error occurred.");
-            }       
+            }
         }
 
         public async Task<PropertyDto> UpdatePropertyAsync(PropertyDto propertyDto)
@@ -164,11 +164,12 @@ namespace LLMS.Service
                     }
                 }
                 return null;
-            } catch (DbUpdateException ex)
+            }
+            catch (DbUpdateException ex)
             {
-            // Database Update Exception
-            Trace.TraceError($"DbUpdateException in UpdatePropertyAsync: {ex.Message}");
-            throw new ApplicationException("An error occurred while accessing the database.");
+                // Database Update Exception
+                Trace.TraceError($"DbUpdateException in UpdatePropertyAsync: {ex.Message}");
+                throw new ApplicationException("An error occurred while accessing the database.");
             }
             catch (InvalidOperationException ex)
             {
@@ -237,7 +238,7 @@ namespace LLMS.Service
                 amenities = dto.Amenities,
                 status = dto.Status,
                 lease_terms = dto.LeaseTerms,
-                image_id = (int)imageId, 
+                image_id = (int)imageId,
                 description = dto.Description
             };
         }

@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using LLMS;
 
 namespace LLMS.ViewModel
 {
@@ -277,6 +276,7 @@ namespace LLMS.ViewModel
                 MessageBox.Show($"Error updating lease: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
         private bool CanDelete(object parameter) => SelectedLease != null;
 
