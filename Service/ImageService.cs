@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -6,23 +8,43 @@ namespace LLMS.Service
 {
     internal class ImageService : IImageService
     {
+        private readonly CloudBlobContainer _container;
+
+        public ImageService(string connectionString, string containerName)
+        {
+            var storageAccount = CloudStorageAccount.Parse(connectionString);
+            var blobClient = storageAccount.CreateCloudBlobClient();
+            _container = blobClient.GetContainerReference(containerName);
+            _container.CreateIfNotExistsAsync().Wait();
+        }
+
         public Task<int?> GetImageIdByUrlAsync(string imageUrl)
         {
-            // 返回模拟的 image ID 或 null
-            return Task.FromResult<int?>(null); // 假设找不到对应的 image ID
+            // 实现逻辑，根据 imageUrl 获取 image ID
+            // 这里返回 null 作为示例
+            return Task.FromResult<int?>(null);
         }
 
         public Task<string> GetImageUrlByIdAsync(int imageId)
         {
-            // 返回模拟的 image URL 或 null
-            return Task.FromResult<string>(null); // 假设找不到对应的 image URL
+            // 实现逻辑，根据 imageId 获取 imageUrl
+            // 这里返回 null 作为示例
+            return Task.FromResult<string>(null);
         }
 
-        public Task<string> UploadImageAsync(Stream imageStream, string imageName)
+        public async Task<string> UploadImageAsync(Stream imageStream, string imageName)
         {
-            // 模拟逻辑：返回一个固定的或随机生成的URL，代表图片已上传
-            // 这里返回一个示例URL，请根据实际情况替换或生成
-            return Task.FromResult("https://example.com/images/" + imageName);
+            try
+            {
+                var blockBlob = _container.GetBlockBlobReference(imageName);
+                await blockBlob.UploadFromStreamAsync(imageStream);
+                return blockBlob.Uri.ToString();
+            }
+            catch (Exception ex)
+            {
+                // 记录异常、处理异常
+                throw new ApplicationException($"An error occurred while uploading the image: {ex.Message}");
+            }
         }
     }
 }
