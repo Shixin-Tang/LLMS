@@ -13,7 +13,6 @@ namespace LLMS.Service
     {
         private readonly IImageService _imageService;
 
-        // 通过构造函数注入 IImageService
         public PropertyService(IImageService imageService)
         {
             _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
