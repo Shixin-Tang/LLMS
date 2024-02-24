@@ -8,6 +8,8 @@ namespace LLMS.Service
         Task<string> UploadImageAsync(Stream imageStream, string imageName);
         Task<int?> GetImageIdByUrlAsync(string imageUrl);
         Task<string> GetImageUrlByIdAsync(int imageId);
+
+        Task<int?> CreateImageRecordAsync(string imageUrl);
     }
 
 }

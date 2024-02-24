@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LLMS.Service
@@ -61,7 +62,7 @@ namespace LLMS.Service
             }
         }
 
-
+        
         public async Task<string> UploadImageAsync(Stream imageStream, string imageName)
         {
             string containerName = "images";
@@ -73,6 +74,33 @@ namespace LLMS.Service
             {
                 throw new ApplicationException($"An error occurred while uploading the image: {ex.Message}");
             }
+        }
+        
+        public async Task<int?> CreateImageRecordAsync(string imageUrl)
+        {
+            int imageId;
+            string imageName = ExtractImageNameFromUrl(imageUrl);
+            using (var context = new testdb1Entities())
+            {
+                var imageRecord = new image
+                {
+                    image_url = imageUrl,
+                    description = imageName, 
+                    uploaded_at = DateTime.UtcNow
+                };
+                context.images.Add(imageRecord);
+                await context.SaveChangesAsync();
+
+                imageId = imageRecord.id; 
+            }
+
+            return imageId;
+        }
+        private string ExtractImageNameFromUrl(string imageUrl)
+        {
+            Uri uri = new Uri(imageUrl);
+            string imageName = uri.Segments.Last(); 
+            return imageName;
         }
     }
 }

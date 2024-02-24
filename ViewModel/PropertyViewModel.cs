@@ -26,6 +26,8 @@ public class PropertyViewModel : BindableBase
         set => SetProperty(ref _selectedProperty, value, OnSelectedPropertyChanged);
     }
 
+    private PropertyDto _newPropertyTemplate;
+
     // Status Message
     private string _statusMessage;
     public string StatusMessage
@@ -53,7 +55,12 @@ public class PropertyViewModel : BindableBase
             .ObservesProperty(() => SelectedProperty);
         DeletePropertyCommand = new DelegateCommand(ExecuteDeleteProperty, CanExecuteDeleteProperty)
             .ObservesProperty(() => SelectedProperty);
-        CreatePropertyCommand = new DelegateCommand(ExecuteCreateProperty, CanExecuteCreateProperty);
+        CreatePropertyCommand = new DelegateCommand(() =>
+        {
+            SelectedProperty = new PropertyDto(); // 创建一个新的DTO实例
+            StatusMessage = "Adding new property...";
+        });
+
         LoadPropertiesAsync();
     }
 
@@ -72,6 +79,14 @@ public class PropertyViewModel : BindableBase
             {
                 using (var stream = File.OpenRead(openFileDialog.FileName))
                 {
+                  
+                    if (SelectedProperty == null || SelectedProperty.Id == 0)
+                    {
+                        
+                        StatusMessage = "Please add or select a property first.";
+                        return;
+                    }
+
                     var imageUrl = await _imageService.UploadImageAsync(stream, Path.GetFileName(openFileDialog.FileName));
                     SelectedProperty.ImageUrl = imageUrl;
                     RaisePropertyChanged(nameof(SelectedProperty));

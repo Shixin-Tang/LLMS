@@ -154,7 +154,7 @@ namespace LLMS.Service
                 using (var context = new testdb1Entities())
                 {
                     var propertyEntity = await context.properties.FindAsync(propertyDto.Id);
-                    var PropertyData = MapToModelAsync(propertyDto);
+                    var PropertyData = await MapToModelAsync(propertyDto);
                     if (propertyEntity != null)
                     {
                         context.Entry(propertyEntity).CurrentValues.SetValues(PropertyData);
@@ -219,8 +219,7 @@ namespace LLMS.Service
                 // Update image record if imageId is not null
                 if (imageId == null)
                 {
-                    // TODO: Implement UploadImageAndCreateRecord method in ImageService
-                    // imageId = await _imageService.UploadImageAndCreateRecord(dto.ImageUrl);
+                    imageId = await _imageService.CreateImageRecordAsync(dto.ImageUrl);
                 }
             }
 
