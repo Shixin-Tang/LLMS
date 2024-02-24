@@ -4,17 +4,14 @@ using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
+using Microsoft.Win32;
 using System.Windows;
 
-public class PropertyViewModel : BindableBase, IDataErrorInfo
+public class PropertyViewModel : BindableBase
 {
     /*-- fields --*/
-    // Dependancy Injection
+    // Dependency Injection
     private readonly IPropertyService _propertyService;
     private readonly IImageService _imageService;
 
@@ -93,12 +90,16 @@ public class PropertyViewModel : BindableBase, IDataErrorInfo
     {
         try
         {
-            var imageUrl = await _imageService.UploadImageFromFileAsync(filePath);
-            if (SelectedProperty != null)
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
-                SelectedProperty.ImageUrl = imageUrl;
-                RaisePropertyChanged(nameof(SelectedProperty));
-                StatusMessage = "Image uploaded successfully from drag and drop.";
+                var fileName = Path.GetFileName(filePath);
+                var imageUrl = await _imageService.UploadImageAsync(stream, fileName);
+                if (SelectedProperty != null)
+                {
+                    SelectedProperty.ImageUrl = imageUrl;
+                    RaisePropertyChanged(nameof(SelectedProperty));
+                    StatusMessage = "Image uploaded successfully from drag and drop.";
+                }
             }
         }
         catch (Exception ex)
@@ -106,6 +107,7 @@ public class PropertyViewModel : BindableBase, IDataErrorInfo
             StatusMessage = $"Failed to upload image from drag and drop: {ex.Message}";
         }
     }
+
 
     /*-- CRUD Implements --*/
     private bool CanExecuteCreateProperty() => true; 
@@ -153,7 +155,6 @@ public class PropertyViewModel : BindableBase, IDataErrorInfo
         }
     }
 
-
     private bool CanExecuteDeleteProperty() => SelectedProperty != null;
 
     private async void ExecuteDeleteProperty()
@@ -176,9 +177,6 @@ public class PropertyViewModel : BindableBase, IDataErrorInfo
         }
     }
 
-
-
-    /*-- Helper --*/
     private async void LoadPropertiesAsync()
     {
         try
@@ -196,66 +194,10 @@ public class PropertyViewModel : BindableBase, IDataErrorInfo
         }
     }
 
+    /*-- Helper --*/
     private void OnSelectedPropertyChanged()
     {
         UploadImageCommand.RaiseCanExecuteChanged();
-    }
-
-    /*-- Error --*/
-    public string Error => null;
-
-    public string this[string propertyName]
-    {
-        get
-        {
-            if (SelectedProperty == null) return null;
-            string error = string.Empty;
-
-            switch (propertyName)
-            {
-                case nameof(SelectedProperty.NumberOfUnits):
-                    if (SelectedProperty.NumberOfUnits < 1)
-                        error = "Number of units must be greater than 0.";
-                    break;
-
-                case nameof(SelectedProperty.Address):
-                    if (string.IsNullOrWhiteSpace(SelectedProperty.Address))
-                        error = "Address is required.";
-                    break;
-
-                case nameof(SelectedProperty.PropertyType):
-                    if (string.IsNullOrWhiteSpace(SelectedProperty.PropertyType))
-                        error = "Property type is required.";
-                    break;
-
-                case nameof(SelectedProperty.SizeInSqFt):
-                    if (SelectedProperty.SizeInSqFt <= 0)
-                        error = "Size must be greater than 0 square feet.";
-                    break;
-
-                case nameof(SelectedProperty.YearBuilt):
-                    if (SelectedProperty.YearBuilt < 1800 || SelectedProperty.YearBuilt > DateTime.Now.Year)
-                        error = $"Year built must be between 1800 and {DateTime.Now.Year}.";
-                    break;
-
-                case nameof(SelectedProperty.RentalPrice):
-                    if (SelectedProperty.RentalPrice <= 0)
-                        error = "Rental price must be greater than 0.";
-                    break;
-
-                case nameof(SelectedProperty.LeaseTerms):
-                    if (string.IsNullOrWhiteSpace(SelectedProperty.LeaseTerms))
-                        error = "Lease terms are required.";
-                    break;
-
-                case nameof(SelectedProperty.ImageUrl):
-                    if (string.IsNullOrWhiteSpace(SelectedProperty.ImageUrl))
-                        error = "Image URL is required.";
-                    break;
-            }
-
-            return error;
-        }
     }
 
 }
