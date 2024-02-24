@@ -4,68 +4,75 @@ using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Windows;
 
 public class PropertyViewModel : BindableBase
 {
     private readonly IPropertyService _propertyService;
     private readonly IImageService _imageService;
 
-    // BINDING PROPERTIES
-    private ObservableCollection<PropertyDto> _properties;
-    public ObservableCollection<PropertyDto> Properties
-    {
-        get => _properties;
-        set => SetProperty(ref _properties, value);
-    }
+    public ObservableCollection<PropertyDto> Properties { get; private set; } = new ObservableCollection<PropertyDto>();
 
     private PropertyDto _selectedProperty;
     public PropertyDto SelectedProperty
     {
         get => _selectedProperty;
-        set => SetProperty(ref _selectedProperty, value, () => UploadImageCommand.RaiseCanExecuteChanged());
+        set => SetProperty(ref _selectedProperty, value, OnSelectedPropertyChanged);
     }
 
-    // COMMANDS
     public DelegateCommand UploadImageCommand { get; private set; }
 
     public PropertyViewModel(IPropertyService propertyService, IImageService imageService)
     {
-        _propertyService = propertyService;
-        _imageService = imageService;
+        _propertyService = propertyService ?? throw new ArgumentNullException(nameof(propertyService));
+        _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
 
-        Properties = new ObservableCollection<PropertyDto>();
-
-        UploadImageCommand = new DelegateCommand(ExecuteUploadImage, CanExecuteUploadImage);
+        UploadImageCommand = new DelegateCommand(ExecuteUploadImageAsync, CanExecuteUploadImage).ObservesProperty(() => SelectedProperty);
 
         LoadPropertiesAsync();
     }
 
-
     private bool CanExecuteUploadImage()
     {
-        return SelectedProperty != null;
+        return SelectedProperty != null && !string.IsNullOrEmpty(SelectedProperty.ImageUrl);
     }
 
-    private void ExecuteUploadImage()
+    private async void ExecuteUploadImageAsync()
     {
-        // 调用上传图片的逻辑
-        // 注意：实际的图片选择和上传逻辑将需要涉及UI交互，可能需要通过服务来实现或使用Messenger模式
+        try
+        {
+            // 上传图片逻辑
+            MessageBox.Show("Upload image feature is not implemented yet.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            // 注意: 实际上传逻辑需要用户交互来选择图片文件，这里只是简化示例
+            await Task.CompletedTask; // 模拟异步操作
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Failed to upload image: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
-    // LoadProperties()
     private async void LoadPropertiesAsync()
     {
         try
         {
             var properties = await _propertyService.GetAllPropertiesAsync();
-            Properties = new ObservableCollection<PropertyDto>(properties);
+            Properties.Clear();
+            foreach (var property in properties)
+            {
+                Properties.Add(property);
+            }
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            // 在这里处理异常，例如记录日志或显示错误消息
-            Debug.WriteLine($"load property load error: {e.Message}");
+            MessageBox.Show($"Failed to load properties: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
+    private void OnSelectedPropertyChanged()
+    {
+        UploadImageCommand.RaiseCanExecuteChanged();
+    }
 }

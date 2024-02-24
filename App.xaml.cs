@@ -1,32 +1,30 @@
+using LLMS;
 using LLMS.Service;
-using System.Windows;
 using Unity;
 
-namespace LLMS
+public partial class App : Application
 {
-    public partial class App : Application
+    private IUnityContainer _container = new UnityContainer();
+
+    protected override void OnStartup(StartupEventArgs e)
     {
-        private IUnityContainer _container;
+        base.OnStartup(e);
+        ConfigureContainer();
+        var mainWindow = _container.Resolve<MainWindow>();
+        mainWindow.Show();
+    }
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
+    private void ConfigureContainer()
+    {
+        // æ³¨å†ŒæœåŠ¡
+        _container.RegisterType<IImageService, ImageService>();
+        _container.RegisterType<IPropertyService, PropertyService>();
 
-            _container = new UnityContainer();
-            ConfigureContainer();
-
-            var mainWindow = _container.Resolve<MainWindow>();
-            mainWindow.Show();
-        }
-
-        private void ConfigureContainer()
-        {
-            _container.RegisterType<IPropertyService, PropertyService>();
-            _container.RegisterType<IImageService, ImageService>();
-
-            // ×¢²á MainWindow£¬ÒÔ±ãÄÜ¹»Í¨¹ıÈİÆ÷½âÎö
-            _container.RegisterType<MainWindow>();
-        }
+        // æ³¨å†Œè§†å›¾
+        // å¦‚æœPropertyViewéœ€è¦é€šè¿‡å®¹å™¨åˆ›å»ºä»¥æ³¨å…¥æœåŠ¡ï¼Œä¹Ÿåº”åœ¨è¿™é‡Œæ³¨å†Œ
+        _container.RegisterType<PropertyView>();
     }
 }
+
+
 

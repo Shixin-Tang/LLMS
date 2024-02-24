@@ -21,16 +21,19 @@ namespace LLMS
 
         // Define AzureDbContext object
         private testdb1Entities db = new testdb1Entities();
-        // private readonly IUnityContainer _container;
-        public MainWindow()
+        private readonly IUnityContainer _container;
+
+        public MainWindow(IUnityContainer container)
         {
             InitializeComponent();
-
+            _container = container;
             this.Loaded += Window_Loaded;
+        }
 
-            // Initialize LeaseWindow object
-            //leaseWindow = new LeaseWindow();
-            // _container = container;
+        private void PropertyDetail_Click(object sender, RoutedEventArgs e)
+        {
+            var propertyView = _container.Resolve<PropertyView>();
+            propertyView.Show();
         }
 
         public void Window_Loaded(object sender, RoutedEventArgs e)
@@ -95,18 +98,18 @@ namespace LLMS
             //tenantWindow.ShowDialog();
         }
 
-        private void PropertyDetail_Click(object sender, RoutedEventArgs e)
-        {
-            // Handle Property Detail button click
-            //PropertyWindow propertyWindow = new PropertyWindow();
-            //propertyWindow.ShowDialog();
-            //var propertyService = _container.Resolve<IPropertyService>();
-            //var imageService = _container.Resolve<IImageService>();
+        //private void PropertyDetail_Click(object sender, RoutedEventArgs e)
+        //{
+        //    // Handle Property Detail button click
+        //    //PropertyWindow propertyWindow = new PropertyWindow();
+        //    //propertyWindow.ShowDialog();
+        //    //var propertyService = _container.Resolve<IPropertyService>();
+        //    //var imageService = _container.Resolve<IImageService>();
 
-           // var propertyView = new PropertyView(propertyService, imageService);
+        //   // var propertyView = new PropertyView(propertyService, imageService);
 
-           // propertyView.Show();
-        }
+        //   // propertyView.Show();
+        //}
 
         private void LoadMainWindow()
         {

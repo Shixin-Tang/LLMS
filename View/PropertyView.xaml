@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LLMS.View"
         mc:Ignorable="d"
-        Title="PropertyView" Height="450" Width="800">
+        Title="PropertyView" Height="600" Width="800"> <!-- 调整了窗口的高度以适应更多内容 -->
     <DockPanel>
         <!-- 省略菜单和状态栏的XAML -->
 
@@ -31,19 +31,45 @@
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
 
             <!-- 右侧详细信息显示 -->
-            <StackPanel Grid.Column="2" Orientation="Vertical">
+            <StackPanel Grid.Column="2" Orientation="Vertical" Margin="5">
                 <Image Name="imageDisplay" Height="100" Width="160" Margin="5" Source="{Binding SelectedProperty.ImageUrl}"/>
-                <Button Content="Upload Image" Command="{Binding UploadImageCommand}" Width="80" Margin="5"/>
-                <WrapPanel>
-                    <Label>Address:</Label>
-                    <TextBox Text="{Binding SelectedProperty.Address, Mode=TwoWay}" Width="120"/>
+                <Button Content="Upload Image" Command="{Binding UploadImageCommand}" Width="120" Margin="5"/>
+
+                <!-- 扩展的详细信息部分 -->
+                <WrapPanel Margin="0,10,0,0">
+                    <Label Content="Number Of Units:"/>
+                    <TextBox Text="{Binding SelectedProperty.NumberOfUnits, Mode=TwoWay}" Width="120"/>
                 </WrapPanel>
-                <WrapPanel Margin="0,20,0,0">
-                    <Label>Status:</Label>
-                    <TextBox Text="{Binding SelectedProperty.Status, Mode=TwoWay}" Width="120"/>
+                <WrapPanel Margin="0,10,0,0">
+                    <Label Content="Property Type:"/>
+                    <TextBox Text="{Binding SelectedProperty.PropertyType, Mode=TwoWay}" Width="120"/>
                 </WrapPanel>
-                <!-- 更多详细信息的控件 -->
+                <WrapPanel Margin="0,10,0,0">
+                    <Label Content="Size (Sq Ft):"/>
+                    <TextBox Text="{Binding SelectedProperty.SizeInSqFt, Mode=TwoWay}" Width="120"/>
+                </WrapPanel>
+                <WrapPanel Margin="0,10,0,0">
+                    <Label Content="Year Built:"/>
+                    <TextBox Text="{Binding SelectedProperty.YearBuilt, Mode=TwoWay}" Width="120"/>
+                </WrapPanel>
+                <WrapPanel Margin="0,10,0,0">
+                    <Label Content="Rental Price:"/>
+                    <TextBox Text="{Binding SelectedProperty.RentalPrice, Mode=TwoWay}" Width="120"/>
+                </WrapPanel>
+                <WrapPanel Margin="0,10,0,0">
+                    <Label Content="Amenities:"/>
+                    <TextBox Text="{Binding SelectedProperty.Amenities, Mode=TwoWay}" Width="120"/>
+                </WrapPanel>
+                <WrapPanel Margin="0,10,0,0">
+                    <Label Content="Lease Terms:"/>
+                    <TextBox Text="{Binding SelectedProperty.LeaseTerms, Mode=TwoWay}" Width="120"/>
+                </WrapPanel>
+                <WrapPanel Margin="0,10,0,0">
+                    <Label Content="Description:"/>
+                    <TextBox Text="{Binding SelectedProperty.Description, Mode=TwoWay}" Width="120" AcceptsReturn="True" Height="100"/>
+                </WrapPanel>
             </StackPanel>
         </Grid>
     </DockPanel>
 </Window>
+
