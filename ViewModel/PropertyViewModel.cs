@@ -14,6 +14,7 @@ public class PropertyViewModel : BindableBase
     private readonly IImageService _imageService;
     private PropertyDto _selectedProperty;
     private string _statusMessage;
+    private bool _isAddingNewProperty = false;
 
     public ObservableCollection<PropertyDto> Properties { get; private set; } = new ObservableCollection<PropertyDto>();
     public PropertyDto SelectedProperty
@@ -21,6 +22,7 @@ public class PropertyViewModel : BindableBase
         get => _selectedProperty;
         set => SetProperty(ref _selectedProperty, value, OnSelectedPropertyChanged);
     }
+
     public string StatusMessage
     {
         get => _statusMessage;
@@ -40,12 +42,31 @@ public class PropertyViewModel : BindableBase
         SavePropertyCommand = new DelegateCommand(ExecuteSaveProperty, CanExecuteSaveProperty);
         DeletePropertyCommand = new DelegateCommand(ExecuteDeleteProperty, CanExecuteDeleteProperty);
 
-        Properties.Add(new PropertyDto { Address = "Add new property..." });
         LoadPropertiesAsync();
     }
+    public async void HandleFileDrop(string filePath)
+    {
+        try
+        {
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                var fileName = Path.GetFileName(filePath);
+                var imageUrl = await _imageService.UploadImageAsync(stream, fileName);
+                if (SelectedProperty != null)
+                {
+                    SelectedProperty.ImageUrl = imageUrl;
+                    RaisePropertyChanged(nameof(SelectedProperty));
+                    StatusMessage = "Image uploaded successfully from drag and drop.";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Failed to upload image from drag and drop: {ex.Message}";
+        }
+    }
 
-    private bool CanExecuteUploadImage() => SelectedProperty != null && !string.IsNullOrEmpty(SelectedProperty.ImageUrl);
-
+    private bool CanExecuteUploadImage() => SelectedProperty != null && (_isAddingNewProperty || !string.IsNullOrEmpty(SelectedProperty.ImageUrl));
     private async void ExecuteUploadImageAsync()
     {
         var openFileDialog = new OpenFileDialog();
@@ -53,37 +74,57 @@ public class PropertyViewModel : BindableBase
         {
             using (var stream = File.OpenRead(openFileDialog.FileName))
             {
-                var imageUrl = await _imageService.UploadImageAsync(stream, Path.GetFileName(openFileDialog.FileName));
-                SelectedProperty.ImageUrl = imageUrl;
-                RaisePropertyChanged(nameof(SelectedProperty));
-                StatusMessage = "Image uploaded successfully.";
+                try
+                {
+                    var imageUrl = await _imageService.UploadImageAsync(stream, Path.GetFileName(openFileDialog.FileName));
+                    SelectedProperty.ImageUrl = imageUrl;
+                    RaisePropertyChanged(nameof(SelectedProperty));
+                    StatusMessage = "Image uploaded successfully.";
+                }
+                catch (Exception ex)
+                {
+                    StatusMessage = $"Error uploading image: {ex.Message}";
+                    return;
+                }
             }
         }
     }
 
-    private bool CanExecuteSaveProperty() => SelectedProperty != null && (_isAddingNewProperty || SelectedProperty.Id > 0);
+    private bool CanExecuteSaveProperty() => SelectedProperty != null && (_isAddingNewProperty || SelectedProperty.Id == 0 || !string.IsNullOrWhiteSpace(SelectedProperty.Address));
 
     private async void ExecuteSaveProperty()
     {
-        if (_isAddingNewProperty || SelectedProperty.Id == 0)
+        try
         {
-            var createdProperty = await _propertyService.CreatePropertyAsync(SelectedProperty);
-            if (createdProperty != null)
+            if (_isAddingNewProperty || SelectedProperty.Id == 0)
+            { 
+                PropertyDto createdProperty = await _propertyService.CreatePropertyAsync(SelectedProperty);
+                if (createdProperty != null)
+                {
+                    Properties.Add(createdProperty);
+                    RaisePropertyChanged(nameof(Properties));
+                    StatusMessage = "Property added successfully.";
+                }
+                else
+                {
+                    StatusMessage = $"Failed to add property.{createdProperty.Address }";
+                }
+            }
+            else
             {
-                Properties.Add(createdProperty);
-                StatusMessage = "Property added successfully.";
+                var updatedProperty = await _propertyService.UpdatePropertyAsync(SelectedProperty);
+                var index = Properties.IndexOf(SelectedProperty);
+                if (index != -1)
+                {
+                    Properties[index] = updatedProperty;
+                    RaisePropertyChanged(nameof(Properties));
+                    StatusMessage = "Property updated successfully.";
+                }
             }
         }
-        else
+        catch (Exception ex)
         {
-            var updatedProperty = await _propertyService.UpdatePropertyAsync(SelectedProperty);
-            var index = Properties.IndexOf(SelectedProperty);
-            if (index != -1)
-            {
-                Properties[index] = updatedProperty;
-                RaisePropertyChanged(nameof(Properties));
-                StatusMessage = "Property updated successfully.";
-            }
+            StatusMessage = $"Error saving property: {ex.Message}";
         }
     }
 
@@ -91,12 +132,19 @@ public class PropertyViewModel : BindableBase
 
     private async void ExecuteDeleteProperty()
     {
-        var result = await _propertyService.DeletePropertyAsync(SelectedProperty.Id);
-        if (result)
+        try
         {
-            Properties.Remove(SelectedProperty);
-            SelectedProperty = null;
-            StatusMessage = "Property deleted successfully.";
+            var result = await _propertyService.DeletePropertyAsync(SelectedProperty.Id);
+            if (result)
+            {
+                Properties.Remove(SelectedProperty);
+                SelectedProperty = null;
+                StatusMessage = "Property deleted successfully.";
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error deleting property: {ex.Message}";
         }
     }
 
@@ -104,18 +152,21 @@ public class PropertyViewModel : BindableBase
     {
         var properties = await _propertyService.GetAllPropertiesAsync();
         Properties.Clear();
-        Properties.Add(new PropertyDto { Address = "Add new property..." });
+        Properties.Add(new PropertyDto
+        {
+            Address = "Add new property...",
+            YearBuilt = new DateTime(1800, 1, 1)
+        });
         foreach (var property in properties)
         {
             Properties.Add(property);
         }
     }
 
-    private void OnSelectedPropertyChanged()
+    public void OnSelectedPropertyChanged()
     {
-        if (SelectedProperty?.Address == "Add new property...")
+        if (SelectedProperty != null && (SelectedProperty.Id == 0 || SelectedProperty.Address == "Add new property..."))
         {
-            SelectedProperty = new PropertyDto();
             _isAddingNewProperty = true;
         }
         else
