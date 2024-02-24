@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LLMS.View"
         mc:Ignorable="d"
-        Title="PropertyView" Height="600" Width="800"> 
+        Title="PropertyView" Height="600" Width="800">
     <DockPanel>
         <!-- Ignore Menu -->
 
@@ -61,19 +61,19 @@
 
                         <Label Content="Number Of Units:" Grid.Row="0" Grid.Column="0"/>
                         <TextBox x:Name="numberOfUnitsTextBox" Text="{Binding SelectedProperty.NumberOfUnits, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" Width="120"/>
-                        <TextBlock Grid.Row="0" Grid.Column="2" Foreground="Red" Text="{Binding Path=(Validation.Errors)[0].ErrorContent, ElementName=numberOfUnitsTextBox}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Foreground="Red" Text="{Binding SelectedProperty[NumberOfUnits]}"/>
 
                         <Label Content="Property Type:" Grid.Row="1" Grid.Column="0"/>
                         <TextBox x:Name="propertyTypeTextBox" Text="{Binding SelectedProperty.PropertyType, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Width="120"/>
-                        <TextBlock Grid.Row="1" Grid.Column="2" Foreground="Red" Text="{Binding Path=(Validation.Errors)[0].ErrorContent, ElementName=propertyTypeTextBox}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="2" Foreground="Red" Text="{Binding SelectedProperty[PropertyType]}"/>
 
                         <Label Content="Size (Sq Ft):" Grid.Row="2" Grid.Column="0"/>
                         <TextBox x:Name="sizeTextBox" Text="{Binding SelectedProperty.SizeInSqFt, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1" Width="120"/>
-                        <TextBlock Grid.Row="2" Grid.Column="2" Foreground="Red" Text="{Binding Path=(Validation.Errors)[0].ErrorContent, ElementName=sizeTextBox}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="2" Foreground="Red" Text="{Binding SelectedProperty[SizeInSqFt]}"/>
 
                         <Label Content="Year Built:" Grid.Row="3" Grid.Column="0"/>
                         <TextBox x:Name="yearBuiltTextBox" Text="{Binding SelectedProperty.YearBuilt, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" Width="120"/>
-                        <TextBlock Grid.Row="3" Grid.Column="2" Foreground="Red" Text="{Binding Path=(Validation.Errors)[0].ErrorContent, ElementName=yearBuiltTextBox}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="2" Foreground="Red" Text="{Binding SelectedProperty[YearBuilt]}"/>
                     </Grid>
                 </Expander>
 
@@ -92,35 +92,48 @@
 
                         <Label Content="Rental Price:" Grid.Row="0" Grid.Column="0"/>
                         <TextBox x:Name="rentalPriceTextBox" Text="{Binding SelectedProperty.RentalPrice, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" Width="120"/>
-                        <TextBlock Grid.Row="0" Grid.Column="2" Foreground="Red" Text="{Binding Path=(Validation.Errors)[0].ErrorContent, ElementName=rentalPriceTextBox}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Foreground="Red" Text="{Binding SelectedProperty[RentalPrice]}"/>
 
                         <Label Content="Lease Terms:" Grid.Row="1" Grid.Column="0"/>
                         <TextBox x:Name="leaseTermsTextBox" Text="{Binding SelectedProperty.LeaseTerms, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Width="120"/>
-                        <TextBlock Grid.Row="1" Grid.Column="2" Foreground="Red" Text="{Binding Path=(Validation.Errors)[0].ErrorContent, ElementName=leaseTermsTextBox}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="2" Foreground="Red" Text="{Binding SelectedProperty[LeaseTerms]}"/>
                     </Grid>
                 </Expander>
 
                 <!-- Amenities -->
                 <Expander Header="Amenities" IsExpanded="False">
-                    <TextBox x:Name="amenitiesTextBox" Text="{Binding SelectedProperty.Amenities, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" Height="100" Width="200"/>
-                    <TextBlock Foreground="Red" Text="{Binding Path=(Validation.Errors)[0].ErrorContent, ElementName=amenitiesTextBox}"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBox x:Name="amenitiesTextBox" Grid.Row="0" Text="{Binding SelectedProperty.Amenities, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" Height="100" Width="200"/>
+                        <TextBlock Grid.Row="1" Foreground="Red" Text="{Binding SelectedProperty[Amenties]}"/>
+                    </Grid>
                 </Expander>
+
 
                 <!-- Description -->
                 <Expander Header="Description" IsExpanded="False">
-                    <TextBox x:Name="descriptionTextBox" Text="{Binding SelectedProperty.Description, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" Height="100" Width="200"/>
-                    <TextBlock Foreground="Red" Text="{Binding Path=(Validation.Errors)[0].ErrorContent, ElementName=descriptionTextBox}"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBox x:Name="descriptionTextBox" Grid.Row="0" Text="{Binding SelectedProperty.Description, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" Height="100" Width="200"/>
+                        <TextBlock Grid.Row="1" Foreground="Red" Text="{Binding SelectedProperty[Description]}"/>
+                    </Grid>
                 </Expander>
             </StackPanel>
         </Grid>
+        <!-- Status Bar -->
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Text="{Binding StatusMessage}" />
+            </StatusBarItem>
+        </StatusBar>
     </DockPanel>
-
-    <!-- Status Bar -->
-    <StatusBar DockPanel.Dock="Bottom">
-        <StatusBarItem>
-            <TextBlock Text="{Binding StatusMessage}" />
-        </StatusBarItem>
-    </StatusBar>
-
 </Window>
 

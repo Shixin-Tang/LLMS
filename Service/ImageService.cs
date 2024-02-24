@@ -1,6 +1,7 @@
-﻿using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using System;
+﻿using System;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -8,41 +9,68 @@ namespace LLMS.Service
 {
     internal class ImageService : IImageService
     {
-        private readonly CloudBlobContainer _container;
+        private readonly IAzureBlobStorageClient _blobStorageClient;
 
-        public ImageService(string connectionString, string containerName)
+        public ImageService(IAzureBlobStorageClient blobStorageClient)
         {
-            var storageAccount = CloudStorageAccount.Parse(connectionString);
-            var blobClient = storageAccount.CreateCloudBlobClient();
-            _container = blobClient.GetContainerReference(containerName);
-            _container.CreateIfNotExistsAsync().Wait();
+            _blobStorageClient = blobStorageClient;
         }
 
-        public Task<int?> GetImageIdByUrlAsync(string imageUrl)
-        {
-            // 实现逻辑，根据 imageUrl 获取 image ID
-            // 这里返回 null 作为示例
-            return Task.FromResult<int?>(null);
-        }
-
-        public Task<string> GetImageUrlByIdAsync(int imageId)
-        {
-            // 实现逻辑，根据 imageId 获取 imageUrl
-            // 这里返回 null 作为示例
-            return Task.FromResult<string>(null);
-        }
-
-        public async Task<string> UploadImageAsync(Stream imageStream, string imageName)
+        public async Task<int?> GetImageIdByUrlAsync(string imageUrl)
         {
             try
             {
-                var blockBlob = _container.GetBlockBlobReference(imageName);
-                await blockBlob.UploadFromStreamAsync(imageStream);
-                return blockBlob.Uri.ToString();
+                using (var context = new testdb1Entities())
+                {
+                    var image = await context.images.FirstOrDefaultAsync(img => img.image_url == imageUrl);
+                    return image?.id;
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                Trace.TraceError($"DbUpdateException in GetImageIdByUrlAsync: {ex.Message}");
+                throw new ApplicationException("An error occurred while accessing the database.");
             }
             catch (Exception ex)
             {
-                // 记录异常、处理异常
+                Trace.TraceError($"Exception in GetImageIdByUrlAsync: {ex.Message}");
+                throw new ApplicationException("An unexpected error occurred.");
+            }
+        }
+
+
+        public async Task<string> GetImageUrlByIdAsync(int imageId)
+        {
+            try
+            {
+                using (var context = new testdb1Entities())
+                {
+                    var image = await context.images.FindAsync(imageId);
+                    return image?.image_url;
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                Trace.TraceError($"DbUpdateException in GetImageUrlByIdAsync: {ex.Message}");
+                throw new ApplicationException("An error occurred while accessing the database.");
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError($"Exception in GetImageUrlByIdAsync: {ex.Message}");
+                throw new ApplicationException("An unexpected error occurred.");
+            }
+        }
+
+
+        public async Task<string> UploadImageAsync(Stream imageStream, string imageName)
+        {
+            string containerName = "images";
+            try
+            {
+                return await _blobStorageClient.UploadFileAsync(containerName, imageName, imageStream);
+            }
+            catch (Exception ex)
+            {
                 throw new ApplicationException($"An error occurred while uploading the image: {ex.Message}");
             }
         }
