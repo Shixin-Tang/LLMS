@@ -1,4 +1,4 @@
-﻿using LLMS.Service;
+using LLMS.Service;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -30,7 +30,8 @@ namespace LLMS.View
             {
                 var files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 // Assuming the first file is the one we're interested in
-                vm.HandleFileDrop(files[0]);
+                var viewModel = this.DataContext as PropertyViewModel;
+                viewModel?.HandleFileDrop(files[0]);
             }
         }
 

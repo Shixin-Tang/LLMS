@@ -71,7 +71,8 @@ public class PropertyViewModel : BindableBase
     private bool CanExecuteUploadImage() => SelectedProperty != null && (_isAddingNewProperty || !string.IsNullOrEmpty(SelectedProperty.ImageUrl));
     private async void ExecuteUploadImageAsync()
     {
-        try
+        var openFileDialog = new OpenFileDialog();
+        if (openFileDialog.ShowDialog() == true)
         {
             var openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)

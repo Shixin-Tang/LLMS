@@ -1,4 +1,4 @@
-﻿using LLMS.Dto;
+using LLMS.Dto;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -64,6 +64,7 @@ namespace LLMS.Service
                 throw new ApplicationException("An unexpected error occurred.");
             }
         }
+
 
         public async Task<bool> DeletePropertyAsync(int id)
         {
