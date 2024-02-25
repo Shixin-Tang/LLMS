@@ -104,10 +104,6 @@
       <DependentUpon>AzureDbContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Dto\PropertyDto.cs" />
-    <Compile Include="Helper\NullOrEmptyStringToImageSourceConverter.cs" />
-    <Compile Include="Helper\NullOrEmptyStringToInverseVisibilityConverter .cs" />
-    <Compile Include="Helper\NullOrEmptyStringToVisibilityConverter.cs" />
-    <Compile Include="Helper\StringToIntConverter.cs" />
     <Compile Include="image.cs">
       <DependentUpon>AzureDbContext.tt</DependentUpon>
     </Compile>
@@ -194,6 +190,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>AzureDbContext.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include=".env" />
     <None Include=".env.sample" />
     <None Include="AzureDbContext.edmx.diagram">
       <DependentUpon>AzureDbContext.edmx</DependentUpon>
