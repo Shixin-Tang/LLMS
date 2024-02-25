@@ -10,82 +10,40 @@ using System.Windows;
 
 public class PropertyViewModel : BindableBase
 {
-    /*-- fields --*/
-    // Dependency Injection
     private readonly IPropertyService _propertyService;
     private readonly IImageService _imageService;
-
-    // Property List
-    public ObservableCollection<PropertyDto> Properties { get; private set; } = new ObservableCollection<PropertyDto>();
-
-    // Property Detail
     private PropertyDto _selectedProperty;
+    private string _statusMessage;
+    private bool _isAddingNewProperty = false;
+
+    public ObservableCollection<PropertyDto> Properties { get; private set; } = new ObservableCollection<PropertyDto>();
     public PropertyDto SelectedProperty
     {
         get => _selectedProperty;
         set => SetProperty(ref _selectedProperty, value, OnSelectedPropertyChanged);
     }
 
-    // Status Message
-    private string _statusMessage;
     public string StatusMessage
     {
         get => _statusMessage;
         set => SetProperty(ref _statusMessage, value);
     }
 
-    // CRUD Commands 
     public DelegateCommand UploadImageCommand { get; private set; }
-    public DelegateCommand CreatePropertyCommand { get; private set; }
-    public DelegateCommand UpdatePropertyCommand { get; private set; }
+    public DelegateCommand SavePropertyCommand { get; private set; }
     public DelegateCommand DeletePropertyCommand { get; private set; }
 
-
-    /*-- Constructor --*/
     public PropertyViewModel(IPropertyService propertyService, IImageService imageService)
     {
         _propertyService = propertyService ?? throw new ArgumentNullException(nameof(propertyService));
         _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
 
-        UploadImageCommand = new DelegateCommand(ExecuteUploadImageAsync, CanExecuteUploadImage)
-            .ObservesProperty(() => SelectedProperty);
-        UpdatePropertyCommand = new DelegateCommand(ExecuteUpdateProperty, CanExecuteUpdateProperty)
-            .ObservesProperty(() => SelectedProperty);
-        DeletePropertyCommand = new DelegateCommand(ExecuteDeleteProperty, CanExecuteDeleteProperty)
-            .ObservesProperty(() => SelectedProperty);
-        CreatePropertyCommand = new DelegateCommand(ExecuteCreateProperty, CanExecuteCreateProperty);
+        UploadImageCommand = new DelegateCommand(ExecuteUploadImageAsync, CanExecuteUploadImage);
+        SavePropertyCommand = new DelegateCommand(ExecuteSaveProperty, CanExecuteSaveProperty);
+        DeletePropertyCommand = new DelegateCommand(ExecuteDeleteProperty, CanExecuteDeleteProperty);
+
         LoadPropertiesAsync();
     }
-
-    /*-- Upload Image --*/
-    private bool CanExecuteUploadImage()
-    {
-        return SelectedProperty != null && !string.IsNullOrEmpty(SelectedProperty.ImageUrl);
-    }
-
-    private async void ExecuteUploadImageAsync()
-    {
-        try
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-            {
-                using (var stream = File.OpenRead(openFileDialog.FileName))
-                {
-                    var imageUrl = await _imageService.UploadImageAsync(stream, Path.GetFileName(openFileDialog.FileName));
-                    SelectedProperty.ImageUrl = imageUrl;
-                    RaisePropertyChanged(nameof(SelectedProperty));
-                    StatusMessage = "Image uploaded successfully.";
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Failed to upload image: {ex.Message}";
-        }
-    }
-
-
     public async void HandleFileDrop(string filePath)
     {
         try
@@ -108,96 +66,117 @@ public class PropertyViewModel : BindableBase
         }
     }
 
+    private bool CanExecuteUploadImage() => SelectedProperty != null && (_isAddingNewProperty || !string.IsNullOrEmpty(SelectedProperty.ImageUrl));
+    private async void ExecuteUploadImageAsync()
+    {
+        var openFileDialog = new OpenFileDialog();
+        if (openFileDialog.ShowDialog() == true)
+        {
+            using (var stream = File.OpenRead(openFileDialog.FileName))
+            {
+                try
+                {
+                    var imageUrl = await _imageService.UploadImageAsync(stream, Path.GetFileName(openFileDialog.FileName));
+                    SelectedProperty.ImageUrl = imageUrl;
+                    RaisePropertyChanged(nameof(SelectedProperty));
+                    StatusMessage = "Image uploaded successfully.";
+                }
+                catch (Exception ex)
+                {
+                    StatusMessage = $"Error uploading image: {ex.Message}";
+                    return;
+                }
+            }
+        }
+    }
 
-    /*-- CRUD Implements --*/
-    private bool CanExecuteCreateProperty() => true; 
+    private bool CanExecuteSaveProperty() => SelectedProperty != null && (_isAddingNewProperty || SelectedProperty.Id == 0 || !string.IsNullOrWhiteSpace(SelectedProperty.Address));
 
-    private async void ExecuteCreateProperty()
+    private async void ExecuteSaveProperty()
     {
         try
         {
-            var newProperty = new PropertyDto(); 
-
-            var createdProperty = await _propertyService.CreatePropertyAsync(newProperty);
-            if (createdProperty != null)
+            if (_isAddingNewProperty || SelectedProperty.Id == 0)
+            { 
+                PropertyDto createdProperty = await _propertyService.CreatePropertyAsync(SelectedProperty);
+                if (createdProperty != null)
+                {
+                    Properties.Add(createdProperty);
+                    RaisePropertyChanged(nameof(Properties));
+                    StatusMessage = "Property added successfully.";
+                }
+                else
+                {
+                    StatusMessage = $"Failed to add property.{createdProperty.Address }";
+                }
+            }
+            else
             {
-                Properties.Add(createdProperty);
-                StatusMessage = "Property created successfully.";
+                var updatedProperty = await _propertyService.UpdatePropertyAsync(SelectedProperty);
+                var index = Properties.IndexOf(SelectedProperty);
+                if (index != -1)
+                {
+                    Properties[index] = updatedProperty;
+                    RaisePropertyChanged(nameof(Properties));
+                    StatusMessage = "Property updated successfully.";
+                }
             }
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Failed to create property: {ex.Message}";
+            StatusMessage = $"Error saving property: {ex.Message}";
         }
     }
 
-
-    private bool CanExecuteUpdateProperty() => SelectedProperty != null;
-
-    private async void ExecuteUpdateProperty()
-    {
-        try
-        {
-            if (SelectedProperty == null) return;
-
-            var updatedProperty = await _propertyService.UpdatePropertyAsync(SelectedProperty);
-            var index = Properties.IndexOf(SelectedProperty);
-            if (index != -1)
-            {
-                Properties[index] = updatedProperty;
-                RaisePropertyChanged(nameof(Properties));
-            }
-            StatusMessage = "Property updated successfully.";
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Failed to update property: {ex.Message}";
-        }
-    }
-
-    private bool CanExecuteDeleteProperty() => SelectedProperty != null;
+    private bool CanExecuteDeleteProperty() => SelectedProperty != null && SelectedProperty.Id > 0;
 
     private async void ExecuteDeleteProperty()
     {
         try
         {
-            if (SelectedProperty == null) return;
-
             var result = await _propertyService.DeletePropertyAsync(SelectedProperty.Id);
             if (result)
             {
                 Properties.Remove(SelectedProperty);
-                SelectedProperty = null; // 或选择列表中的另一个项
+                SelectedProperty = null;
                 StatusMessage = "Property deleted successfully.";
             }
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Failed to delete property: {ex.Message}";
+            StatusMessage = $"Error deleting property: {ex.Message}";
         }
     }
 
     private async void LoadPropertiesAsync()
     {
-        try
+        var properties = await _propertyService.GetAllPropertiesAsync();
+        Properties.Clear();
+        Properties.Add(new PropertyDto
         {
-            var properties = await _propertyService.GetAllPropertiesAsync();
-            Properties.Clear();
-            foreach (var property in properties)
-            {
-                Properties.Add(property);
-            }
-        }
-        catch (Exception ex)
+            Address = "Add new property...",
+            YearBuilt = new DateTime(1800, 1, 1)
+        });
+        foreach (var property in properties)
         {
-            MessageBox.Show($"Failed to load properties: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Properties.Add(property);
         }
     }
 
-    /*-- Helper --*/
-    private void OnSelectedPropertyChanged()
+    public void OnSelectedPropertyChanged()
     {
-        UploadImageCommand.RaiseCanExecuteChanged();
-    }
+        if (SelectedProperty != null && (SelectedProperty.Id == 0 || SelectedProperty.Address == "Add new property..."))
+        {
+            _isAddingNewProperty = true;
+        }
+        else
+        {
+            _isAddingNewProperty = false;
+        }
 
+        UploadImageCommand.RaiseCanExecuteChanged();
+        SavePropertyCommand.RaiseCanExecuteChanged();
+        DeletePropertyCommand.RaiseCanExecuteChanged();
+    }
 }
+
