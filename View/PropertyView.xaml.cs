@@ -33,5 +33,14 @@ namespace LLMS.View
                 vm.HandleFileDrop(files[0]);
             }
         }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var viewModel = DataContext as PropertyViewModel;
+            if (viewModel.SelectedProperty?.Address == "Add new property...")
+            {
+                viewModel.AddPropertyCommand.Execute(null);
+            }
+        }
     }
 }
