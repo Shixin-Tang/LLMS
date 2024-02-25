@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using LLMS;
 
 namespace LLMS.ViewModel
 {
@@ -247,8 +248,17 @@ namespace LLMS.ViewModel
             {
                 leas newLease = new leas
                 {
-                    // Initialize properties from text boxes
-                    // Assuming validation is done on UI before adding
+                    property_id = int.Parse(PropertyId), // Assuming PropertyId is bound to a TextBox for property ID
+                    tenant_id = int.Parse(TenantId), // Assuming TenantId is bound to a TextBox for tenant ID
+                    start_date = DateTime.Parse(StartDate), // Assuming StartDate is bound to a TextBox for start date
+                    end_date = DateTime.Parse(EndDate), // Assuming EndDate is bound to a TextBox for end date
+                    rent_amount = decimal.Parse(RentAmount), // Assuming RentAmount is bound to a TextBox for rent amount
+                    lease_clauses = LeaseClauses, // Assuming LeaseClauses is bound to a TextBox for lease clauses
+                    payment_due_day = int.Parse(PaymentDueDay), // Assuming PaymentDueDay is bound to a TextBox for payment due day
+                    utility_by_owner = UtilityByOwner, // Assuming UtilityByOwner is bound to a TextBox for utility by owner
+                    utility_by_tenant = UtilityByTenant, // Assuming UtilityByTenant is bound to a TextBox for utility by tenant
+                    renewal_term = RenewalTerm, // Assuming RenewalTerm is bound to a TextBox for renewal term
+                    early_terminate_con = EarlyTerminateCon // Assuming EarlyTerminateCon is bound to a TextBox for early termination condition
                 };
 
                 db.leases.Add(newLease);
@@ -276,7 +286,6 @@ namespace LLMS.ViewModel
                 MessageBox.Show($"Error updating lease: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
 
         private bool CanDelete(object parameter) => SelectedLease != null;
 

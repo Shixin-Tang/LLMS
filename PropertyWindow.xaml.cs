@@ -1,5 +1,4 @@
-﻿using LLMS.Service;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,17 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace LLMS.View
+namespace LLMS
 {
     /// <summary>
-    /// PropertyView.xaml 的交互逻辑
+    /// Interaction logic for PropertyWindow.xaml
     /// </summary>
-    public partial class PropertyView : Window
+    public partial class PropertyWindow : Window
     {
-        public PropertyView(IPropertyService propertyService, IImageService imageService)
+        public PropertyWindow()
         {
             InitializeComponent();
-            this.DataContext = new PropertyViewModel(propertyService, imageService);
         }
     }
 }

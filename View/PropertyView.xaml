@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LLMS.View"
         mc:Ignorable="d"
-        Title="PropertyView" Height="600" Width="800">
+        Title="PropertyView" Height="450" Width="800">
     <DockPanel>
-        <!-- Ignore Menu -->
+        <!-- 省略菜单和状态栏的XAML -->
 
         <Grid DockPanel.Dock="Top" Margin="10">
             <Grid.ColumnDefinitions>
@@ -16,17 +16,8 @@
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- left side ListView -->
-            <ListView
-                Grid.Column="0"
-                Name="listView"
-                ItemsSource="{Binding Properties}"
-                SelectedItem="{Binding SelectedProperty, Mode=TwoWay}"
-                SelectionMode="Extended"
-                AllowDrop="True"
-                Drop="ListView_Drop"
-                DragEnter="ListView_DragEnter"
-                >
+            <!-- 左侧ListView -->
+            <ListView Grid.Column="0" Name="listView" ItemsSource="{Binding Properties}" SelectedItem="{Binding SelectedProperty, Mode=TwoWay}" SelectionMode="Extended">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="ID" Width="30" DisplayMemberBinding="{Binding Id}"/>
@@ -39,101 +30,20 @@
             <!-- GridSplitter -->
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
 
-            <!-- Right side detail information -->
-            <StackPanel Grid.Column="2" Orientation="Vertical" Margin="5">
+            <!-- 右侧详细信息显示 -->
+            <StackPanel Grid.Column="2" Orientation="Vertical">
                 <Image Name="imageDisplay" Height="100" Width="160" Margin="5" Source="{Binding SelectedProperty.ImageUrl}"/>
-                <Button Content="Upload Image" Command="{Binding UploadImageCommand}" Width="120" Margin="5"/>
-
-                <!-- Property Basic Information -->
-                <Expander Header="Basic Information" IsExpanded="True">
-                    <Grid Margin="5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="200"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Label Content="Number Of Units:" Grid.Row="0" Grid.Column="0"/>
-                        <TextBox x:Name="numberOfUnitsTextBox" Text="{Binding SelectedProperty.NumberOfUnits, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" Width="120"/>
-                        <TextBlock Grid.Row="0" Grid.Column="2" Foreground="Red" Text="{Binding SelectedProperty[NumberOfUnits]}"/>
-
-                        <Label Content="Property Type:" Grid.Row="1" Grid.Column="0"/>
-                        <TextBox x:Name="propertyTypeTextBox" Text="{Binding SelectedProperty.PropertyType, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Width="120"/>
-                        <TextBlock Grid.Row="1" Grid.Column="2" Foreground="Red" Text="{Binding SelectedProperty[PropertyType]}"/>
-
-                        <Label Content="Size (Sq Ft):" Grid.Row="2" Grid.Column="0"/>
-                        <TextBox x:Name="sizeTextBox" Text="{Binding SelectedProperty.SizeInSqFt, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1" Width="120"/>
-                        <TextBlock Grid.Row="2" Grid.Column="2" Foreground="Red" Text="{Binding SelectedProperty[SizeInSqFt]}"/>
-
-                        <Label Content="Year Built:" Grid.Row="3" Grid.Column="0"/>
-                        <TextBox x:Name="yearBuiltTextBox" Text="{Binding SelectedProperty.YearBuilt, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1" Width="120"/>
-                        <TextBlock Grid.Row="3" Grid.Column="2" Foreground="Red" Text="{Binding SelectedProperty[YearBuilt]}"/>
-                    </Grid>
-                </Expander>
-
-                <!-- Lease Information -->
-                <Expander Header="Lease Information" IsExpanded="False">
-                    <Grid Margin="5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="200"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Label Content="Rental Price:" Grid.Row="0" Grid.Column="0"/>
-                        <TextBox x:Name="rentalPriceTextBox" Text="{Binding SelectedProperty.RentalPrice, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" Width="120"/>
-                        <TextBlock Grid.Row="0" Grid.Column="2" Foreground="Red" Text="{Binding SelectedProperty[RentalPrice]}"/>
-
-                        <Label Content="Lease Terms:" Grid.Row="1" Grid.Column="0"/>
-                        <TextBox x:Name="leaseTermsTextBox" Text="{Binding SelectedProperty.LeaseTerms, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Width="120"/>
-                        <TextBlock Grid.Row="1" Grid.Column="2" Foreground="Red" Text="{Binding SelectedProperty[LeaseTerms]}"/>
-                    </Grid>
-                </Expander>
-
-                <!-- Amenities -->
-                <Expander Header="Amenities" IsExpanded="False">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBox x:Name="amenitiesTextBox" Grid.Row="0" Text="{Binding SelectedProperty.Amenities, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" Height="100" Width="200"/>
-                        <TextBlock Grid.Row="1" Foreground="Red" Text="{Binding SelectedProperty[Amenties]}"/>
-                    </Grid>
-                </Expander>
-
-
-                <!-- Description -->
-                <Expander Header="Description" IsExpanded="False">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBox x:Name="descriptionTextBox" Grid.Row="0" Text="{Binding SelectedProperty.Description, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" Height="100" Width="200"/>
-                        <TextBlock Grid.Row="1" Foreground="Red" Text="{Binding SelectedProperty[Description]}"/>
-                    </Grid>
-                </Expander>
+                <Button Content="Upload Image" Command="{Binding UploadImageCommand}" Width="80" Margin="5"/>
+                <WrapPanel>
+                    <Label>Address:</Label>
+                    <TextBox Text="{Binding SelectedProperty.Address, Mode=TwoWay}" Width="120"/>
+                </WrapPanel>
+                <WrapPanel Margin="0,20,0,0">
+                    <Label>Status:</Label>
+                    <TextBox Text="{Binding SelectedProperty.Status, Mode=TwoWay}" Width="120"/>
+                </WrapPanel>
+                <!-- 更多详细信息的控件 -->
             </StackPanel>
         </Grid>
-        <!-- Status Bar -->
-        <StatusBar DockPanel.Dock="Bottom">
-            <StatusBarItem>
-                <TextBlock Text="{Binding StatusMessage}" />
-            </StatusBarItem>
-        </StatusBar>
     </DockPanel>
 </Window>
-
