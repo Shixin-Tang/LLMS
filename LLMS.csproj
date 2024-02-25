@@ -221,6 +221,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>AzureDbContext.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include=".env" />
     <None Include=".env.sample" />
     <None Include="AzureDbContext.edmx.diagram">
       <DependentUpon>AzureDbContext.edmx</DependentUpon>
