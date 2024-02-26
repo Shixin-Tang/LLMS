@@ -84,6 +84,23 @@
 3. Need assistance / figure things out
 - visual machine is too slow to develop, need a code template to follow 
 
+2024/02/22 -2024/02/25 Cao, Lisi
+1. Done / not done since last scrum:
+- property CRUD
+- Azure client
+- Unity Container
+- MVVM
+- debug and fix bugs
+2. To do until next Scrum:
+- Unit Test for property
+- refine hard code
+- adjust UI and user experience
+3. Need assistance / figure things out
+- database should be refine
+  - image to property 1 : 1 ? 1: many
+  - fields contraints are not unified, nullable ? auto generate? auto grows?
+  - github conflicts should be handled
+
 -------------------------------------------------------------------------------------------------------
 
 2024/02/21 Zhi Li
