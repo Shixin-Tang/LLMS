@@ -25,12 +25,12 @@ namespace LLMS.View
 
         private void Image_Drop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            var vm = DataContext as PropertyViewModel;
+            if (vm !=null && e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 var files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 // Assuming the first file is the one we're interested in
-                var viewModel = this.DataContext as PropertyViewModel;
-                viewModel?.HandleFileDrop(files[0]);
+                vm.HandleFileDrop(files[0]);
             }
         }
 
@@ -41,3 +41,4 @@ namespace LLMS.View
         }
     }
 }
+ 

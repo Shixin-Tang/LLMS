@@ -72,8 +72,8 @@ namespace LLMS.Service
             string containerName = "fsd10-demo-blob";
             try
             {
-                string timestamp = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                string uniqueImageName = $"{Path.GetFileNameWithoutExtension(imageName)}_{timestamp}{Path.GetExtension(imageName)}";
+                 string timestamp = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+                 string uniqueImageName = $"{Path.GetFileNameWithoutExtension(imageName)}_{timestamp}{Path.GetExtension(imageName)}";
 
                 return await _blobStorageClient.UploadFileAsync(containerName, uniqueImageName, imageStream);
             }

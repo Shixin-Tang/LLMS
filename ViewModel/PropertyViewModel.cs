@@ -6,7 +6,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using Microsoft.Win32;
-using System.Windows;
 
 public class PropertyViewModel : BindableBase
 {
@@ -38,9 +37,12 @@ public class PropertyViewModel : BindableBase
         _propertyService = propertyService ?? throw new ArgumentNullException(nameof(propertyService));
         _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
 
-        UploadImageCommand = new DelegateCommand(ExecuteUploadImageAsync, CanExecuteUploadImage);
-        SavePropertyCommand = new DelegateCommand(ExecuteSaveProperty, CanExecuteSaveProperty);
-        DeletePropertyCommand = new DelegateCommand(ExecuteDeleteProperty, CanExecuteDeleteProperty);
+        UploadImageCommand = new DelegateCommand(ExecuteUploadImageAsync, CanExecuteUploadImage)
+            .ObservesProperty(() => SelectedProperty);
+        SavePropertyCommand = new DelegateCommand(ExecuteSaveProperty, CanExecuteSaveProperty)
+             .ObservesProperty(() => SelectedProperty);
+        DeletePropertyCommand = new DelegateCommand(ExecuteDeleteProperty, CanExecuteDeleteProperty)
+             .ObservesProperty(() => SelectedProperty);
 
         LoadPropertiesAsync();
     }
@@ -69,24 +71,23 @@ public class PropertyViewModel : BindableBase
     private bool CanExecuteUploadImage() => SelectedProperty != null && (_isAddingNewProperty || !string.IsNullOrEmpty(SelectedProperty.ImageUrl));
     private async void ExecuteUploadImageAsync()
     {
-        var openFileDialog = new OpenFileDialog();
-        if (openFileDialog.ShowDialog() == true)
+        try
         {
-            using (var stream = File.OpenRead(openFileDialog.FileName))
+            var openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
             {
-                try
+                using (var stream = File.OpenRead(openFileDialog.FileName))
                 {
                     var imageUrl = await _imageService.UploadImageAsync(stream, Path.GetFileName(openFileDialog.FileName));
                     SelectedProperty.ImageUrl = imageUrl;
                     RaisePropertyChanged(nameof(SelectedProperty));
                     StatusMessage = "Image uploaded successfully.";
                 }
-                catch (Exception ex)
-                {
-                    StatusMessage = $"Error uploading image: {ex.Message}";
-                    return;
-                }
             }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error uploading image: {ex.Message}";
         }
     }
 
