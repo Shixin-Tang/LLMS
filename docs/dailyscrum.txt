@@ -70,6 +70,12 @@
 - add search address or tenant name feature
 - add export to Excel file feature
 
+2024/02/26 Tang Shixin
+1. Done / not done since last scrum:
+- Add search by address or tenant name in MainWindow 
+- Add export to Excel file feature
+2. To do until next Scrum:
+- text app
 -------------------------------------------------------------------------------------------------------
 
 2024/02/21 Cao, Lisi
