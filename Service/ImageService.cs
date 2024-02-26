@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,33 +39,15 @@ namespace LLMS.Service
                 Trace.TraceError($"Exception in GetImageIdByUrlAsync: {ex.Message}");
                 throw new ApplicationException("An unexpected error occurred.");
             }
+
         }
 
-
-        public async Task<string> GetImageUrlByIdAsync(int imageId)
+        Task<string> IImageService.GetImageUrlByIdAsync(int imageId)
         {
-            try
-            {
-                using (var context = new testdb1Entities())
-                {
-                    var image = await context.images.FindAsync(imageId);
-                    return image?.image_url;
-                }
-            }
-            catch (DbUpdateException ex)
-            {
-                Trace.TraceError($"DbUpdateException in GetImageUrlByIdAsync: {ex.Message}");
-                throw new ApplicationException("An error occurred while accessing the database.");
-            }
-            catch (Exception ex)
-            {
-                Trace.TraceError($"Exception in GetImageUrlByIdAsync: {ex.Message}");
-                throw new ApplicationException("An unexpected error occurred.");
-            }
+            throw new NotImplementedException();
         }
 
-
-        public async Task<string> UploadImageAsync(Stream imageStream, string imageName)
+        Task<string> IImageService.UploadImageAsync(Stream imageStream, string imageName)
         {
             string containerName = "fsd10-demo-blob";
             try

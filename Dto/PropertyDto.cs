@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -195,9 +195,9 @@ namespace LLMS.Dto
         public string Amenities { get; set; }
         public int Status { get; set; }
         public string LeaseTerms { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageUrl { get; set; } // only url is needed
         public string Description { get; set; }
-
+        
         // IDataErrorInfo Members
         public string Error => string.Empty;
 
@@ -249,6 +249,5 @@ namespace LLMS.Dto
     }
     */
 }
-
 
 

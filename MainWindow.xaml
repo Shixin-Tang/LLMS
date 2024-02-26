@@ -11,6 +11,7 @@
             <!-- top menu and ietm -->
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_MainMenu">
+                    <MenuItem Header="Save" Click="Save_Click"/>
                     <MenuItem Header="Exit" Click="Exit_Click"/>
                 </MenuItem>
                 <MenuItem Header="Lease" Click="LeaseDetail_Click"/>
@@ -18,20 +19,13 @@
                 <MenuItem Header="Property" Click="PropertyDetail_Click"/>
             </Menu>
 
-            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
-                <Label Content="Address or Tenant Name:" VerticalAlignment="Center" Margin="5"/>
-                <TextBox x:Name="Tbxsearch" Width="300" Margin="5"/>
-                <Button Content="Search" Click="SearchButton_Click" Width="60" Margin="5"/>
-                <Button Content="Reset" Click="ResetButton_Click" Width="60" Margin="5"/>
-            </StackPanel>
-
             <!-- status bar -->
             <StatusBar DockPanel.Dock="Bottom">
                 <TextBlock Name="StatusBarText">Property Preview</TextBlock>
             </StatusBar>
 
             <!-- main area -->
-            <Grid Margin="5">
+            <Grid Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="5"/>

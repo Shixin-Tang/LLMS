@@ -1,13 +1,19 @@
-﻿using LLMS.Service;
-using LLMS.View;
-using LLMS.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Unity;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using LLMS.View;
+using LLMS.ViewModel;
 
 namespace LLMS
 {
@@ -19,40 +25,18 @@ namespace LLMS
         // Define LeaseWindow object
         //private LeaseWindow leaseWindow;
 
-        private List<MainWindowViewModel> originalItemsList = new List<MainWindowViewModel>();
-
-
         // Define AzureDbContext object
         private testdb1Entities db = new testdb1Entities();
-        private readonly IUnityContainer _container;
 
-        public MainWindow(IUnityContainer container)
+        public MainWindow()
         {
-            try
-            {
-                InitializeComponent();
-                _container = container;
-                this.Loaded += Window_Loaded;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred during MainWindow initialization: {ex.Message}");
-            }
-        }
+            InitializeComponent();
 
-        private void PropertyDetail_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var propertyView = _container.Resolve<PropertyView>();
-                propertyView.Show();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-            }
-        }
+            this.Loaded += Window_Loaded;
 
+            // Initialize LeaseWindow object
+            //leaseWindow = new LeaseWindow();
+        }
 
         public void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -86,12 +70,10 @@ namespace LLMS
             // Handle opening Tenant window
         }*/
 
-       /* private void OpenPropertyView_Click(object sender, RoutedEventArgs e)
+        /*private void OpenPropertyWindow_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-       */
-
+            // Handle opening Property window
+        }*/
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -112,13 +94,20 @@ namespace LLMS
         private void TenantDetail_Click(object sender, RoutedEventArgs e)
         {
             // Handle Tenant Detail button click
-            //TenantWindow tenantWindow = new TenantWindow();
-            //tenantWindow.ShowDialog();
+           TenantWindow tenantwindow = new TenantWindow();
+            tenantwindow.ShowDialog();
+        }
+
+        private void PropertyDetail_Click(object sender, RoutedEventArgs e)
+        {
+            // Handle Property Detail button click
+            //PropertyWindow propertyWindow = new PropertyWindow();
+            //propertyWindow.ShowDialog();
         }
 
         private void LoadMainWindow()
         {
-            originalItemsList = db.leases.Select(lease => new MainWindowViewModel
+            var MainWindowViewModels = db.leases.Select(lease => new MainWindowViewModel
             {
                 LeaseId = lease.id,
                 PaymentDueDay = lease.payment_due_day,
@@ -132,12 +121,12 @@ namespace LLMS
                 EmergencyContactNo = lease.tenant.emergency_contact_number
             }).ToList();
 
-            listView.ItemsSource = originalItemsList;
+            listView.ItemsSource = MainWindowViewModels;
 
             // default select the first item in the list
             if (listView.Items.Count > 0)
             {
-                listView.SelectedItem = originalItemsList[0];
+                listView.SelectedItem = MainWindowViewModels[0];
             }
         }
 
@@ -152,39 +141,6 @@ namespace LLMS
             //update image URL
             imageDisplay.Source = new BitmapImage(new Uri(lease.ImageUrl, UriKind.Absolute));
         }
-
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            string searchText = Tbxsearch.Text.ToLower();
-            var filteredItems = originalItemsList.Where(item => item.Address.ToLower().Contains(searchText) || item.TenantName.ToLower().Contains(searchText)).ToList();
-
-            if (filteredItems.Any())
-            {
-                listView.ItemsSource = filteredItems;
-                listView.SelectedItem = filteredItems[0];
-            }
-            else
-            {
-                MessageBox.Show("No matching content found.", "Search Result", MessageBoxButton.OK, MessageBoxImage.Information);
-                listView.ItemsSource = originalItemsList; // Optionally reset the list or keep it filtered
-            }
-        }
-
-        private void ResetButton_Click(object sender, RoutedEventArgs e)
-        {
-            // reset the search textbox
-            Tbxsearch.Text = string.Empty;
-
-            // reset the listview to the original list
-            listView.ItemsSource = originalItemsList;
-
-            // reset the selected item to the first item in the list
-            if (originalItemsList.Any())
-            {
-                listView.SelectedItem = originalItemsList[0];
-            }
-        }
-
 
     }
 }

@@ -2,7 +2,6 @@ using LLMS.Dto;
 using LLMS.Service;
 using Prism.Commands;
 using Prism.Mvvm;
-using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using Microsoft.Win32;
@@ -34,8 +33,8 @@ public class PropertyViewModel : BindableBase
 
     public PropertyViewModel(IPropertyService propertyService, IImageService imageService)
     {
-        _propertyService = propertyService ?? throw new ArgumentNullException(nameof(propertyService));
-        _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
+        _propertyService = propertyService;
+        _imageService = imageService;
 
         UploadImageCommand = new DelegateCommand(ExecuteUploadImageAsync, CanExecuteUploadImage)
             .ObservesProperty(() => SelectedProperty);
@@ -147,6 +146,7 @@ public class PropertyViewModel : BindableBase
         }
     }
 
+    // LoadProperties()
     private async void LoadPropertiesAsync()
     {
         var properties = await _propertyService.GetAllPropertiesAsync();
