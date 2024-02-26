@@ -5,35 +5,75 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using LLMS;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.Win32;
+using System.IO;
+using dotenv.net;
+using static System.Net.WebRequestMethods;
+using System.Threading.Tasks;
 
 namespace LLMS.ViewModel
 {
     public class TenantWindowViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
+        private string BlobConnectionString;
         private testdb1Entities db;
+        private string ContainerName;
+
+        private string _imageUrl; // Property to store the image URL
+
+        public string ImageUrl
+        {
+            get { return _imageUrl; }
+            set
+            {
+                _imageUrl = value;
+                OnPropertyChanged(nameof(ImageUrl));
+            }
+        }
+
 
         public TenantWindowViewModel()
         {
+            
             try
             {
                 db = new testdb1Entities();
                 AddCommand = new RelayCommand(Add);
                 UpdateCommand = new RelayCommand(Update, CanUpdate);
                 DeleteCommand = new RelayCommand(Delete, CanDelete);
+                UploadImageCommand = new RelayCommand(UploadImage);
 
                 LoadTenantData();
+
+                // Initialize Azure Blob connection settings
+                BlobConnectionString = Environment.GetEnvironmentVariable("ConnectionString");
+                ContainerName = Environment.GetEnvironmentVariable("NameContainer");
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error loading tenant data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
+            LoadTenantData(); // Load tenant data including image URL
         }
+
 
         public void LoadTenantData()
         {
-            Tenants = new ObservableCollection<tenant>(db.tenants.ToList());
+            // Fetch tenants with image URL
+            var tenantsWithImageUrls = db.tenants.ToList().Select(tenant =>
+            {
+                // Fetch image URL based on profile_image_id
+                tenant.ImageUrl = db.images.FirstOrDefault(img => img.id == tenant.profile_image_id)?.image_url;
+                return tenant;
+            });
+
+            Tenants = new ObservableCollection<tenant>(tenantsWithImageUrls);
         }
 
         private ObservableCollection<tenant> _tenants;
@@ -67,8 +107,11 @@ namespace LLMS.ViewModel
                 OnPropertyChanged(nameof(Postcode));
                 OnPropertyChanged(nameof(Province));
                 OnPropertyChanged(nameof(PhoneNumber));
+               
             }
         }
+
+      
 
         public string Id
         {
@@ -200,9 +243,11 @@ namespace LLMS.ViewModel
             }
         }
 
+    
         public ICommand AddCommand { get; }
         public ICommand UpdateCommand { get; }
         public ICommand DeleteCommand { get; }
+        public ICommand UploadImageCommand { get; }
 
         private bool CanUpdate(object parameter) => SelectedTenant != null;
 
@@ -265,6 +310,100 @@ namespace LLMS.ViewModel
                 MessageBox.Show($"Error deleting tenant: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private async void UploadImage(object parameter)
+        {
+            try
+            {
+                // Open file dialog to select an image file
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    string filePath = openFileDialog.FileName;
+
+                    // Upload the selected image file to the database
+                    string imageUrl = await UploadImageToDatabase(filePath);
+
+                    // Update the tenant's profile_image_id with the ID of the uploaded image
+                    if (!string.IsNullOrEmpty(imageUrl))
+                    {
+                        int? imageId = SaveImageUrlToDatabase(imageUrl);
+                        if (imageId.HasValue)
+                        {
+                            SelectedTenant.profile_image_id = imageId.Value;
+
+                            // Reload the image URL
+                            SelectedTenant.ImageUrl = db.images.FirstOrDefault(img => img.id == imageId.Value)?.image_url;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+        }
+
+        private int? SaveImageUrlToDatabase(string imageUrl)
+        {
+            try
+            {
+                // Create a new image entity with the image URL
+                image newImage = new image
+                {
+                    image_url = imageUrl,
+                    uploaded_at = DateTime.Now
+                };
+
+                // Add the new image to the database and save changes
+                db.images.Add(newImage);
+                db.SaveChanges();
+
+                // Return the ID of the newly added image
+                return newImage.id;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while saving the image URL to the database: {ex.Message}");
+                return null;
+            }
+        }
+
+
+
+        private async Task<string> UploadImageToDatabase(string filePath)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    MessageBox.Show("Please select a file first.");
+                    return null;
+                }
+
+                // Create Blob client and container reference
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(BlobConnectionString);
+                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                CloudBlobContainer container = blobClient.GetContainerReference(ContainerName);
+                await container.CreateIfNotExistsAsync();
+
+                // Upload image to Blob
+                string fileName = System.IO.Path.GetFileName(filePath);
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
+                await blockBlob.UploadFromFileAsync(filePath);
+
+                MessageBox.Show($"File uploaded successfully.");
+
+                // Return the URL of the uploaded image
+                return blockBlob.Uri.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                return null;
+            }
+        }
+
 
         protected void OnPropertyChanged(string propertyName)
         {

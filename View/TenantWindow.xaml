@@ -62,6 +62,20 @@
                 <!-- Right details display -->
                 <StackPanel Grid.Column="2" Orientation="Vertical">
                     <!-- Details display -->
+                   
+                        <Border BorderBrush="Gray" BorderThickness="2" CornerRadius="5" 
+         Width="160" Height="100" Background="#EEE" 
+         AllowDrop="True" Drop="Image_Drop" DragEnter="Image_DragEnter">
+                            <Grid>
+                                <TextBlock Text="Drag to Preview" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    Foreground="Gray" Visibility="{Binding SelectedTenant.ImageUrl}"/>
+                                <Image Source="{Binding SelectedTenant.ImageUrl}" Stretch="Uniform" />
+                            </Grid>
+                        </Border>
+                       
+                        <Button Content="Upload Image" Command="{Binding UploadImageCommand}" Width="120" Margin="5"/>
+                    
                     <WrapPanel>
                         <Label>ID:</Label>
                         <TextBox Name="txtId" Width="120" Text="{Binding SelectedTenant.id}"/>
