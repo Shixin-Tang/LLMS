@@ -112,8 +112,8 @@ namespace LLMS
         private void TenantDetail_Click(object sender, RoutedEventArgs e)
         {
             // Handle Tenant Detail button click
-            //TenantWindow tenantWindow = new TenantWindow();
-            //tenantWindow.ShowDialog();
+            TenantWindow tenantWindow = new TenantWindow();
+            tenantWindow.ShowDialog();
         }
 
         private void LoadMainWindow()
