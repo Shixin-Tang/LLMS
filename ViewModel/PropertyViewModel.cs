@@ -80,6 +80,8 @@ public class PropertyViewModel : BindableBase
                 {
                     var imageUrl = await _imageService.UploadImageAsync(stream, Path.GetFileName(openFileDialog.FileName));
                     SelectedProperty.ImageUrl = imageUrl;
+                    var imageId = await _imageService.CreateImageRecordAsync(imageUrl);
+                    SelectedProperty.ImageId = imageId;
                     RaisePropertyChanged(nameof(SelectedProperty));
                     StatusMessage = "Image uploaded successfully.";
                 }
@@ -105,10 +107,6 @@ public class PropertyViewModel : BindableBase
                     Properties.Add(createdProperty);
                     RaisePropertyChanged(nameof(Properties));
                     StatusMessage = "Property added successfully.";
-                }
-                else
-                {
-                    StatusMessage = $"Failed to add property.{createdProperty.Address }";
                 }
             }
             else

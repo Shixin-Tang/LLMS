@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace LLMS.Service
@@ -29,16 +30,27 @@ namespace LLMS.Service
             {
                 using (var context = new testdb1Entities())
                 {
-                    var propertyEntity = await MapToModelAsync(propertyDto);
-
-                    if (propertyEntity.image_id == 0)
+                    propertyDto.Status = 1;
+                    var propertyEntity = new property
                     {
-                        throw new ApplicationException("An image must be associated with the property.");
-                    }
-
+                        address = propertyDto.Address,
+                        number_of_units = propertyDto.NumberOfUnits,
+                        property_type = propertyDto.PropertyType,
+                        size_in_sq_ft = propertyDto.SizeInSqFt,
+                        year_built = propertyDto.YearBuilt,
+                        rental_price = propertyDto.RentalPrice,
+                        amenities = propertyDto.Amenities,
+                        status = propertyDto.Status,
+                        lease_terms = propertyDto.LeaseTerms,
+                        image_id = propertyDto.ImageId,
+                        description = propertyDto.Description,
+                        created_at = DateTime.Now
+                    };
+                    
                     context.properties.Add(propertyEntity);
                     await context.SaveChangesAsync();
-                    return await MapToDtoAsync(propertyEntity);
+                    var newProperty = await GetPropertyByIdAsync(propertyEntity.id);
+                    return newProperty;
                 }
             }
             catch (DbUpdateException ex)
@@ -52,7 +64,6 @@ namespace LLMS.Service
                 throw new ApplicationException("An unexpected error occurred.");
             }
         }
-
 
         public async Task<bool> DeletePropertyAsync(int id)
         {
@@ -164,7 +175,6 @@ namespace LLMS.Service
                     var propertyEntity = await context.properties.FindAsync(propertyDto.Id);
                     if (propertyEntity != null)
                     {
-                        // 直接比较DTO和实体字段，当它们不一致时更新实体字段
                         if (!string.Equals(propertyEntity.address, propertyDto.Address))
                         {
                             propertyEntity.address = propertyDto.Address;
@@ -206,15 +216,11 @@ namespace LLMS.Service
                             propertyEntity.description = propertyDto.Description;
                         }
 
-                        int imageId = await _imageService.GetImageIdByUrlAsync(propertyDto.ImageUrl);
+                        int? imageId = await _imageService.GetImageIdByUrlAsync(propertyDto.ImageUrl);
 
-                        if (imageId == 0)
+                        if (propertyEntity.image_id != imageId)
                         {
-                            imageId = await _imageService.CreateImageRecordAsync(propertyDto.ImageUrl);
-                        }
-                        if (propertyEntity.image_id != imageId && imageId > 0)
-                        {
-                            propertyEntity.image_id = imageId;
+                            propertyEntity.image_id = await _imageService.CreateImageRecordAsync(propertyDto.ImageUrl);
                         }
 
                         await context.SaveChangesAsync();
@@ -224,25 +230,6 @@ namespace LLMS.Service
 
                 return null;
 
-                /*
-                using (var context = new testdb1Entities())
-                {
-                    var propertyEntity = await context.properties.FindAsync(propertyDto.Id); 
-                    
-                    var PropertyData = await MapToModelAsync(propertyDto);
-                    if(PropertyData.image_id == 0)
-                    {
-                        PropertyData.image_id = propertyEntity.image_id;
-                    }
-                    if (propertyEntity != null)
-                    {
-                        context.Entry(propertyEntity).CurrentValues.SetValues(PropertyData);
-                        await context.SaveChangesAsync();
-                        return await MapToDtoAsync(propertyEntity);
-                    }
-                }
-                return null;
-                */
             }
             catch (DbUpdateException ex)
             {
@@ -293,12 +280,6 @@ namespace LLMS.Service
         {
             try
             {
-                int imageId = await _imageService.GetImageIdByUrlAsync(dto.ImageUrl);
-
-                if (imageId == 0)
-                {
-                    imageId = await _imageService.CreateImageRecordAsync(dto.ImageUrl);
-                }
                 return new property
                 {
                     address = dto.Address,
@@ -310,7 +291,7 @@ namespace LLMS.Service
                     amenities = dto.Amenities,
                     status = dto.Status,
                     lease_terms = dto.LeaseTerms,
-                    image_id = imageId,
+                    image_id = dto.ImageId,
                     description = dto.Description
                 };
             }

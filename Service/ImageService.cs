@@ -83,7 +83,6 @@ namespace LLMS.Service
             }
         }
 
-
         public async Task<int> CreateImageRecordAsync(string imageUrl)
         {
             using (var context = new testdb1Entities())
@@ -91,8 +90,8 @@ namespace LLMS.Service
                 var imageRecord = new image
                 {
                     image_url = imageUrl,
-                    description = ExtractImageNameFromUrl(imageUrl), 
-                    // uploaded_at = DateTime.UtcNow
+                    description = ExtractImageNameFromUrl(imageUrl),
+                    uploaded_at = DateTime.UtcNow
                 };
                 context.images.Add(imageRecord);
                 await context.SaveChangesAsync();
