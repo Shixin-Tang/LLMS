@@ -11,6 +11,8 @@
             <!-- top menu and ietm -->
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_MainMenu">
+                    <MenuItem Header="Export ALL to Excel" Click="ExportAllToExcel_Click"/>
+                    <MenuItem Header="Export Selected to Excel" Click="ExportSelectedToExcel_Click"/>
                     <MenuItem Header="Exit" Click="Exit_Click"/>
                 </MenuItem>
                 <MenuItem Header="Lease" Click="LeaseDetail_Click"/>
