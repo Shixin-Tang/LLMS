@@ -36,20 +36,20 @@
 - Create the GitHub repository and invite team member
 - Create the Trello board and invite team member
 - Create the Azure database
-2. To do until next Scrum:
+2. To do until the next Scrum:
 - Create tables in Azure Database
 - Share the Azure database connection string
 - Create Azure storage
 3. Need assistance / figure things out
-- Learn how to create azure storage (watch videos)
+- Learn how to create Azure storage (watch videos)
 
 2024/02/22 Tang Shixin
 1. Done / not done since last scrum:
 - Create tables in Azure Database
 - Share the Azure database connection string
 - Create Azure storage
-2. To do until next Scrum:
-- save image to  Azure Blog Storage, get image URL, dispaly image via URL
+2. To do until the next Scrum:
+- save the image to  Azure Blog Storage, get the image URL, and display the image via URL
 
 2024/02/23 Tang Shixin
 1. Done / not done since last scrum:
@@ -57,7 +57,18 @@
 - Create mock data in Azure Database
 - Display List of Leases GridView, and Lease detail information
 - Display image from Azure Blob Storage
+2. To do until the next Scrum:
+- Create a demo project to test upload images to Azure Blob Storage
+- add .env file to store confidential to access Azure Blog Storage
+- get environment variable from .env file
+
+2024/02/25 Tang Shixin
+1. Done / not done since last scrum:
+- Create the demo project AzureBlobTest to test upload images to Azure Blob Storage 
+- create .env file, to store confidential to access Azure Blog Storage include ConnectionString， NameContainer
 2. To do until next Scrum:
+- add search address or tenant name feature
+- add export to Excel file feature
 
 -------------------------------------------------------------------------------------------------------
 
