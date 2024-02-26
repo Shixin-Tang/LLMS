@@ -214,6 +214,10 @@
     <Compile Include="Service\ImageService.cs" />
     <Compile Include="Service\IPropertyService.cs" />
     <Compile Include="Service\PropertyService.cs" />
+    <Compile Include="ViewModel\TenantWindowViewModel.cs" />
+    <Compile Include="View\TenantWindow.xaml.cs">
+      <DependentUpon>TenantWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\PropertyViewModel.cs" />
     <Compile Include="View\LeaseWindow.xaml.cs">
@@ -229,6 +233,10 @@
     <Compile Include="View\PropertyView.xaml.cs">
       <DependentUpon>PropertyView.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\TenantWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\LeaseWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
