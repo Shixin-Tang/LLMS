@@ -102,8 +102,6 @@ namespace LLMS.Dto
             set => SetProperty(ref _imageId, value);
         }
 
-        // 为其他属性继续添加公共属性...
-
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -126,7 +124,6 @@ namespace LLMS.Dto
 
         public bool HasBeenEdited => _hasBeenEdited;
 
-        // IDataErrorInfo 成员...
         public string Error => string.Empty;
 
         public string this[string propertyName]
