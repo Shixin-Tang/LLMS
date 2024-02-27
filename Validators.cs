@@ -11,6 +11,8 @@ namespace LLMS.Validators
     {
         public TenantValidator()
         {
+            RuleFor(t => t).NotNull().WithMessage("Tenant object cannot be null.");
+
             RuleFor(t => t.email)
                 .NotEmpty().WithMessage("Email is required.")
                 .EmailAddress().WithMessage("Invalid email address format.");
@@ -39,12 +41,7 @@ namespace LLMS.Validators
             RuleFor(t => t.phone_number)
                 .NotEmpty().WithMessage("Phone number is required.")
                 .Matches(@"^\d{10}$").WithMessage("Phone number must be 10 digits.");
-
-            // Additional validation rules:
-            // You can add more rules specific to your application's requirements
         }
-
-
     }
 
     public class LeaseValidator : AbstractValidator<leas>
