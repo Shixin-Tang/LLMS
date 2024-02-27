@@ -18,6 +18,7 @@
                 <MenuItem Header="Lease" Click="LeaseDetail_Click"/>
                 <MenuItem Header="Tenant" Click="TenantDetail_Click"/>
                 <MenuItem Header="Property" Click="PropertyDetail_Click"/>
+                <MenuItem Header="Refresh" Click="Refresh_Click"/>
             </Menu>
 
             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">

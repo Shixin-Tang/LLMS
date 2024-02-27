@@ -4,6 +4,7 @@ using LLMS.View;
 using LLMS.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Windows;
@@ -18,8 +19,6 @@ namespace LLMS
     /// </summary>
     public partial class MainWindow : Window
     {
-        // Define LeaseWindow object
-        //private LeaseWindow leaseWindow;
 
         private List<MainWindowViewModel> originalItemsList = new List<MainWindowViewModel>();
 
@@ -48,6 +47,7 @@ namespace LLMS
             {
                 var propertyView = _container.Resolve<PropertyView>();
                 propertyView.Show();
+                StatusBarText.Text = "Open Property Detail";
             }
             catch (Exception ex)
             {
@@ -62,37 +62,11 @@ namespace LLMS
             LoadMainWindow();
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
-        {
-            // Handle Save button click
-        }
-
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             // Handle Exit button click
             Close();
         }
-
-        /*private void OpenLeaseWindow_Click(object sender, RoutedEventArgs e)
-        {
-            // Hide main window content
-            this.Visibility = Visibility.Collapsed;
-            // Show lease window
-            leaseWindow.ShowDialog();
-            // Show main window content again when the lease window is closed
-            this.Visibility = Visibility.Visible;
-        }*/
-
-        /*private void OpenTenantWindow_Click(object sender, RoutedEventArgs e)
-        {
-            // Handle opening Tenant window
-        }*/
-
-       /* private void OpenPropertyView_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-       */
 
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -101,12 +75,14 @@ namespace LLMS
             {
                 // update right panel with selected lease information
                 UpdateRightPanel(selectedLease);
+                StatusBarText.Text = "display the selected item";
             }
         }
 
         private void LeaseDetail_Click(object sender, RoutedEventArgs e)
         {
             // Handle Lease Detail button click
+            StatusBarText.Text = "Open Lease Detail";
             LeaseWindow leaseWindow = new LeaseWindow();
             leaseWindow.ShowDialog();
         }
@@ -114,6 +90,7 @@ namespace LLMS
         private void TenantDetail_Click(object sender, RoutedEventArgs e)
         {
             // Handle Tenant Detail button click
+            StatusBarText.Text = "Open Tenant Detail";
             TenantWindow tenantWindow = new TenantWindow();
             tenantWindow.ShowDialog();
         }
@@ -141,6 +118,7 @@ namespace LLMS
             }
             catch (Exception ex)
             {
+                StatusBarText.Text = "Error accessing database";
                 MessageBox.Show($"Error accessing database: {ex.Message}");
             }
 
@@ -148,6 +126,7 @@ namespace LLMS
             if (listView.Items.Count > 0)
             {
                 listView.SelectedItem = originalItemsList[0];
+                StatusBarText.Text = "select the first row as default";
             }
         }
 
@@ -172,6 +151,7 @@ namespace LLMS
             {
                 listView.ItemsSource = filteredItems;
                 listView.SelectedItem = filteredItems[0];
+                StatusBarText.Text = "Matching content found";
             }
             else
             {
@@ -193,6 +173,8 @@ namespace LLMS
             {
                 listView.SelectedItem = originalItemsList[0];
             }
+
+            StatusBarText.Text = "reset the search result";
         }
 
         private void ExportAllToExcel_Click(object sender, RoutedEventArgs e)
@@ -224,7 +206,7 @@ namespace LLMS
             var workbook = new ClosedXML.Excel.XLWorkbook();
             var worksheet = workbook.Worksheets.Add("LeasesInfo");
 
-            // 添加表头
+            // add title
             worksheet.Cell(1, 1).Value = "Lease ID";
             worksheet.Cell(1, 2).Value = "Payment Due Day";
             worksheet.Cell(1, 3).Value = "Rent Amount";
@@ -264,8 +246,15 @@ namespace LLMS
                 workbook.SaveAs(dialog.FileName);
                 MessageBox.Show("Data exported successfully.");
             }
+
         }
 
-
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            //load all lease information from the database
+            StatusBarText.Text = "Refresh the Main Window";
+            LoadMainWindow();
+            
+        }
     }
 }
