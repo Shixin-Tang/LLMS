@@ -201,6 +201,7 @@
     <Compile Include="Helper\NullOrEmptyStringToImageSourceConverter.cs" />
     <Compile Include="Helper\NullOrEmptyStringToInverseVisibilityConverter .cs" />
     <Compile Include="Helper\NullOrEmptyStringToVisibilityConverter.cs" />
+    <Compile Include="Helper\StatusToYesNoConverter .cs" />
     <Compile Include="Helper\StringToIntConverter.cs" />
     <Compile Include="image.cs">
       <DependentUpon>AzureDbContext.tt</DependentUpon>

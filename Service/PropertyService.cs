@@ -30,23 +30,9 @@ namespace LLMS.Service
             {
                 using (var context = new testdb1Entities())
                 {
-                    propertyDto.Status = 1;
-                    var propertyEntity = new property
-                    {
-                        address = propertyDto.Address,
-                        number_of_units = propertyDto.NumberOfUnits,
-                        property_type = propertyDto.PropertyType,
-                        size_in_sq_ft = propertyDto.SizeInSqFt,
-                        year_built = propertyDto.YearBuilt,
-                        rental_price = propertyDto.RentalPrice,
-                        amenities = propertyDto.Amenities,
-                        status = propertyDto.Status,
-                        lease_terms = propertyDto.LeaseTerms,
-                        image_id = propertyDto.ImageId,
-                        description = propertyDto.Description,
-                        created_at = DateTime.Now
-                    };
-                    
+
+                    var propertyEntity = MapToModel(propertyDto);
+
                     context.properties.Add(propertyEntity);
                     await context.SaveChangesAsync();
                     var newProperty = await GetPropertyByIdAsync(propertyEntity.id);
@@ -253,7 +239,6 @@ namespace LLMS.Service
         private async Task<PropertyDto> MapToDtoAsync(property propertyEntity)
         {
             string imageUrl = null;
-            // Check if image_id is greater than 0
             if (propertyEntity.image_id > 0)
             {
                 imageUrl = await _imageService.GetImageUrlByIdAsync(propertyEntity.image_id);
@@ -276,8 +261,7 @@ namespace LLMS.Service
             };
         }
 
-
-        private async Task<property> MapToModelAsync(PropertyDto dto)
+        private property MapToModel(PropertyDto dto)
         {
             try
             {
@@ -290,16 +274,17 @@ namespace LLMS.Service
                     year_built = dto.YearBuilt,
                     rental_price = dto.RentalPrice,
                     amenities = dto.Amenities,
-                    status = dto.Status,
+                    status = dto.Status, // 确保Status字段适配了您的需求
                     lease_terms = dto.LeaseTerms,
                     image_id = dto.ImageId,
-                    description = dto.Description
+                    description = dto.Description,
+                    created_at = DateTime.Now
                 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Trace.TraceError($"Exception in MapToModelAsync: {ex.Message}");
-                throw new ApplicationException("An unexpected error occurred.");
+                Trace.TraceError($"Exception in MapToModel: {ex.Message}");
+                throw new ApplicationException("An unexpected error occurred during the mapping process.");
             }
         }
     }
