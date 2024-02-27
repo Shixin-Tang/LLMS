@@ -1,4 +1,5 @@
-﻿using LLMS.ViewModel;
+﻿using LLMS.View;
+using LLMS.ViewModel;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Unity;
 
 namespace LLMS
 {
@@ -24,6 +26,7 @@ namespace LLMS
         
         private testdb1Entities db = new testdb1Entities();
         private TenantWindowViewModel _viewModel;
+        private readonly IUnityContainer _container;
 
         public TenantWindow()
         {
@@ -57,11 +60,6 @@ namespace LLMS
             }
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
-        {
-            // Handle Save button click
-        }
-
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             // Handle Exit button click
@@ -70,23 +68,36 @@ namespace LLMS
 
         private void OpenLeaseWindow_Click(object sender, RoutedEventArgs e)
         {
-
+            // Handle Lease Detail button click
+            StatusBarText.Text = "Open Lease Detail";
+            LeaseWindow leaseWindow = new LeaseWindow();
+            leaseWindow.ShowDialog();
         }
 
         private void OpenTenantWindow_Click(object sender, RoutedEventArgs e)
         {
-            // Handle opening Tenant window
+            // Handle Tenant Detail button click
+            StatusBarText.Text = "Open Tenant Detail";
+            TenantWindow tenantWindow = new TenantWindow();
+            tenantWindow.ShowDialog();
         }
+
 
         private void OpenPropertyWindow_Click(object sender, RoutedEventArgs e)
         {
-            // Handle opening Property window
+            try
+            {
+                var propertyView = _container.Resolve<PropertyView>();
+                propertyView.Show();
+                StatusBarText.Text = "Open Property Detail";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
         }
 
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-         
-        }
+
 
 
 

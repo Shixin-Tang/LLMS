@@ -3,18 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LLMS.ViewModel"
+        xmlns:local="clr-namespace:LLMS.ViewModel"        
         mc:Ignorable="d"
         Title="Tenant - Landlord Management System" Height="768" Width="1024">
     <Window.DataContext>
         <local:TenantWindowViewModel/>
     </Window.DataContext>
-    <Grid>
+        <Grid>
         <DockPanel>
             <!-- Top menu and project name -->
             <Menu DockPanel.Dock="Top">
             <MenuItem Header="_MainMenu">
-                <MenuItem Header="Save" Click="Save_Click"/>
+               
                 <MenuItem Header="Exit" Click="Exit_Click"/>
             </MenuItem>
             <MenuItem Header="Lease" Click="OpenLeaseWindow_Click"/>
@@ -33,7 +33,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="5"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Left ListView -->
@@ -76,17 +76,16 @@
                        
                         <Button Content="Upload Image" Command="{Binding UploadImageCommand}" Width="120" Margin="5"/>
                     
-                    <WrapPanel>
-                        <Label>ID:</Label>
-                        <TextBox Name="txtId" Width="120" Text="{Binding SelectedTenant.id}"/>
-                    </WrapPanel>
+                 
                     <WrapPanel Margin="0,20,0,0">
                         <Label>Email:</Label>
                         <TextBox x:Name="txtEmail" Width="120" Margin="10,0,0,0" Text="{Binding SelectedTenant.email}"/>
+                        <Label x:Name="LblEmailError" Content="" Foreground="Red" HorizontalAlignment="Left" Margin="329,18,0,0" VerticalAlignment="Top"/>
                     </WrapPanel>
                     <WrapPanel Margin="0,20,0,0">
                         <Label>First Name:</Label>
                         <TextBox x:Name="txtFirstName" Width="120" Margin="10,0,0,0" Text="{Binding SelectedTenant.first_name}"/>
+
                     </WrapPanel>
                     <WrapPanel Margin="0,20,0,0">
                         <Label>Last Name:</Label>

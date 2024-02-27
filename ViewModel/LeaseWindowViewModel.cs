@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.Entity.Infrastructure;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace LLMS.ViewModel
 {
+
+   
     public class RelayCommand : ICommand
     {
         private readonly Action<object> _execute;
@@ -124,7 +129,7 @@ namespace LLMS.ViewModel
 
         public string StartDate
         {
-            get { return SelectedLease?.start_date.ToString(); }
+            get { return SelectedLease?.start_date.ToShortDateString(); }
             set
             {
                 if (SelectedLease != null && DateTime.TryParse(value, out DateTime result))
@@ -137,7 +142,7 @@ namespace LLMS.ViewModel
 
         public string EndDate
         {
-            get { return SelectedLease?.end_date.ToString(); }
+            get { return SelectedLease?.end_date.ToShortDateString(); }
             set
             {
                 if (SelectedLease != null && DateTime.TryParse(value, out DateTime result))
@@ -147,7 +152,6 @@ namespace LLMS.ViewModel
                 }
             }
         }
-
         public string RentAmount
         {
             get { return SelectedLease?.rent_amount.ToString(); }
@@ -239,20 +243,57 @@ namespace LLMS.ViewModel
             }
         }
 
+       
+
+
         public ICommand AddCommand { get; }
         public ICommand UpdateCommand { get; }
         public ICommand DeleteCommand { get; }
 
         private bool CanUpdate(object parameter) => SelectedLease != null;
 
+        private int? GetSelectedPropertyIdFromUI()
+        {
+            if (SelectedLease != null)
+            {
+                return SelectedLease.property_id;
+            }
+            return null;
+        }
+
+        // Method to retrieve the selected tenant ID from the UI
+        private int? GetSelectedTenantIdFromUI()
+        {
+            if (SelectedLease != null)
+            {
+                return SelectedLease.tenant_id;
+            }
+            return null;
+        }
+
         private void Add(object parameter)
         {
             try
             {
+                // Retrieve the selected property and tenant IDs from the UI
+                int? propertyId = GetSelectedPropertyIdFromUI();
+                int? tenantId = GetSelectedTenantIdFromUI();
+
                 leas newLease = new leas
                 {
                     // Initialize properties from text boxes
-                    // Assuming validation is done on UI before adding
+                    
+                    property_id = int.Parse(PropertyId), // Assuming PropertyId is a string property representing the property ID from UI
+                    tenant_id = int.Parse(TenantId), // Assuming TenantId is a string property representing the tenant ID from UI
+                    start_date = DateTime.Parse(StartDate), // Assuming StartDate is a string property representing the start date from UI
+                    end_date = DateTime.Parse(EndDate), // Assuming EndDate is a string property representing the end date from UI
+                    rent_amount = decimal.Parse(RentAmount), // Assuming RentAmount is a string property representing the rent amount from UI
+                    lease_clauses = LeaseClauses,
+                    payment_due_day = int.Parse(PaymentDueDay), // Assuming PaymentDueDay is a string property representing the payment due day from UI
+                    utility_by_owner = UtilityByOwner,
+                    utility_by_tenant = UtilityByTenant,
+                    renewal_term = RenewalTerm,
+                    early_terminate_con = EarlyTerminateCon
                 };
 
                 db.leases.Add(newLease);
@@ -261,12 +302,15 @@ namespace LLMS.ViewModel
                 LoadLeaseData();
                 MessageBox.Show("Lease added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+            catch (FormatException ex)
+            {
+                MessageBox.Show($"Error adding lease: Invalid input format. {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error adding lease: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
         private void Update(object parameter)
         {
             try
@@ -299,9 +343,13 @@ namespace LLMS.ViewModel
             }
         }
 
+       
+
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
     }
 }

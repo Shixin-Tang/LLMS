@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace LLMS.ViewModel
 {
-    public class TenantWindowViewModel : INotifyPropertyChanged
+    public class TenantWindowViewModel : INotifyPropertyChanged 
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private string BlobConnectionString;
@@ -243,11 +243,15 @@ namespace LLMS.ViewModel
             }
         }
 
-    
+        
+
+
+
         public ICommand AddCommand { get; }
         public ICommand UpdateCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand UploadImageCommand { get; }
+
 
         private bool CanUpdate(object parameter) => SelectedTenant != null;
 
@@ -403,6 +407,7 @@ namespace LLMS.ViewModel
                 return null;
             }
         }
+
 
 
         protected void OnPropertyChanged(string propertyName)
