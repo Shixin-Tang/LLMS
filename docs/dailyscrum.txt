@@ -129,3 +129,39 @@
 - MVVM architect still have some problems to figure out 
 
 
+2024/02/22 Zhi Li
+1. Done / not done since last scrum:
+- Create lease and tenant window
+- Create the view model for lease and tenant
+2. To do until the next Scrum:
+- Apply the MVVM to the lease and tenant window
+
+2024/02/23 Zhi Li
+1. Done / not done since last scrum:
+- Display List of Leases GridView, and Lease detail information for lease window
+- Apply CRUD feature to lease window
+2. To do until the next Scrum:
+- Complete the lease window
+- Apply CRUD feature to tenant window
+
+2024/02/25 Tang Shixin
+1. Done / not done since last scrum:
+-- Display List of Leases GridView, and Lease detail information for tenant window
+- Apply CRUD featrure to lease window
+2. To do until next Scrum:
+- add image upload feature for tenant window
+
+2024/02/26 Zhi Li
+1. Done / not done since last scrum:
+- Add image upload feature for tenant window
+- test image upload feature
+2. To do until next Scrum:
+- test app
+
+2024/02/27 Zhi Li
+1. Done / not done since last scrum:
+- Add validation for input
+- Test validation for input
+2. To do until next Scrum:
+- test app
+- fix bugs
