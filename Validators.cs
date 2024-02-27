@@ -39,8 +39,8 @@ namespace LLMS.Validators
                 .NotEmpty().WithMessage("Province is required.");
 
             RuleFor(t => t.phone_number)
-                .NotEmpty().WithMessage("Phone number is required.")
-                .Matches(@"^\d{10}$").WithMessage("Phone number must be 10 digits.");
+                .NotEmpty().WithMessage("Phone number is required.");
+                
         }
     }
 
