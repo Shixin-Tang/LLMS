@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -20,6 +20,7 @@ namespace LLMS.Dto
         private string _leaseTerms;
         private string _imageUrl;
         private string _description;
+        private int _imageId;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -93,6 +94,12 @@ namespace LLMS.Dto
         {
             get => _description;
             set => SetProperty(ref _description, value);
+        }
+
+        public int ImageId
+        {
+            get => _imageId;
+            set => SetProperty(ref _imageId, value);
         }
 
         // 为其他属性继续添加公共属性...

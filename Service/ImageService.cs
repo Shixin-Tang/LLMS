@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
@@ -72,8 +72,8 @@ namespace LLMS.Service
             string containerName = "fsd10-demo-blob";
             try
             {
-                string timestamp = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-                string uniqueImageName = $"{Path.GetFileNameWithoutExtension(imageName)}_{timestamp}{Path.GetExtension(imageName)}";
+                 string timestamp = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+                 string uniqueImageName = $"{Path.GetFileNameWithoutExtension(imageName)}_{timestamp}{Path.GetExtension(imageName)}";
 
                 return await _blobStorageClient.UploadFileAsync(containerName, uniqueImageName, imageStream);
             }
@@ -83,7 +83,6 @@ namespace LLMS.Service
             }
         }
 
-
         public async Task<int> CreateImageRecordAsync(string imageUrl)
         {
             using (var context = new testdb1Entities())
@@ -91,8 +90,8 @@ namespace LLMS.Service
                 var imageRecord = new image
                 {
                     image_url = imageUrl,
-                    description = ExtractImageNameFromUrl(imageUrl), 
-                    // uploaded_at = DateTime.UtcNow
+                    description = ExtractImageNameFromUrl(imageUrl),
+                    uploaded_at = DateTime.UtcNow
                 };
                 context.images.Add(imageRecord);
                 await context.SaveChangesAsync();

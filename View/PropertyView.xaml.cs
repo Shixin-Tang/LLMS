@@ -1,4 +1,4 @@
-﻿using LLMS.Service;
+using LLMS.Service;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -25,7 +25,8 @@ namespace LLMS.View
 
         private void Image_Drop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            var vm = DataContext as PropertyViewModel;
+            if (vm !=null && e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 var files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 // Assuming the first file is the one we're interested in
@@ -41,3 +42,4 @@ namespace LLMS.View
         }
     }
 }
+ 

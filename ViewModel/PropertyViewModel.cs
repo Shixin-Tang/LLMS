@@ -6,7 +6,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using Microsoft.Win32;
-using System.Windows;
 
 public class PropertyViewModel : BindableBase
 {
@@ -38,9 +37,12 @@ public class PropertyViewModel : BindableBase
         _propertyService = propertyService ?? throw new ArgumentNullException(nameof(propertyService));
         _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
 
-        UploadImageCommand = new DelegateCommand(ExecuteUploadImageAsync, CanExecuteUploadImage);
-        SavePropertyCommand = new DelegateCommand(ExecuteSaveProperty, CanExecuteSaveProperty);
-        DeletePropertyCommand = new DelegateCommand(ExecuteDeleteProperty, CanExecuteDeleteProperty);
+        UploadImageCommand = new DelegateCommand(ExecuteUploadImageAsync, CanExecuteUploadImage)
+            .ObservesProperty(() => SelectedProperty);
+        SavePropertyCommand = new DelegateCommand(ExecuteSaveProperty, CanExecuteSaveProperty)
+             .ObservesProperty(() => SelectedProperty);
+        DeletePropertyCommand = new DelegateCommand(ExecuteDeleteProperty, CanExecuteDeleteProperty)
+             .ObservesProperty(() => SelectedProperty);
 
         LoadPropertiesAsync();
     }
@@ -72,21 +74,23 @@ public class PropertyViewModel : BindableBase
         var openFileDialog = new OpenFileDialog();
         if (openFileDialog.ShowDialog() == true)
         {
-            using (var stream = File.OpenRead(openFileDialog.FileName))
+            var openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
             {
-                try
+                using (var stream = File.OpenRead(openFileDialog.FileName))
                 {
                     var imageUrl = await _imageService.UploadImageAsync(stream, Path.GetFileName(openFileDialog.FileName));
                     SelectedProperty.ImageUrl = imageUrl;
+                    var imageId = await _imageService.CreateImageRecordAsync(imageUrl);
+                    SelectedProperty.ImageId = imageId;
                     RaisePropertyChanged(nameof(SelectedProperty));
                     StatusMessage = "Image uploaded successfully.";
                 }
-                catch (Exception ex)
-                {
-                    StatusMessage = $"Error uploading image: {ex.Message}";
-                    return;
-                }
             }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error uploading image: {ex.Message}";
         }
     }
 
@@ -104,10 +108,6 @@ public class PropertyViewModel : BindableBase
                     Properties.Add(createdProperty);
                     RaisePropertyChanged(nameof(Properties));
                     StatusMessage = "Property added successfully.";
-                }
-                else
-                {
-                    StatusMessage = $"Failed to add property.{createdProperty.Address }";
                 }
             }
             else
