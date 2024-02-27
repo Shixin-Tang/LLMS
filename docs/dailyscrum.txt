@@ -115,6 +115,18 @@
   - fields contraints are not unified, nullable ? auto generate? auto grows?
   - github conflicts should be handled
 
+2024/02/26-2024/02/27 Cao, Lisi
+1. Done / not done since last scrum:
+- merge property CRUD into develop
+- fix branch conflict
+- adjust View UI design
+- adjust some hard code
+- write 9 unit tests
+2. To do until next Scrum:
+- take a rest
+3. Need assistance / figure things out
+- VM should keep time stamp correct so as to get access to Azure Storage
+- if not familiar with branch , please keep extra version or stable version
 -------------------------------------------------------------------------------------------------------
 
 2024/02/21 Zhi Li
