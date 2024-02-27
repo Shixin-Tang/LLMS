@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FluentValidation;
+using LLMS.Validators;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Entity.Infrastructure;
@@ -43,6 +45,7 @@ namespace LLMS.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
 
         private testdb1Entities db;
+        private readonly IValidator<leas> _validator;
 
         public LeaseWindowViewModel()
         {
@@ -52,6 +55,7 @@ namespace LLMS.ViewModel
                 AddCommand = new RelayCommand(Add);
                 UpdateCommand = new RelayCommand(Update, CanUpdate);
                 DeleteCommand = new RelayCommand(Delete, CanDelete);
+                _validator = new LeaseValidator();
 
                 LoadLeaseData();
             }
@@ -275,10 +279,14 @@ namespace LLMS.ViewModel
         {
             try
             {
-                // Retrieve the selected property and tenant IDs from the UI
-                int? propertyId = GetSelectedPropertyIdFromUI();
-                int? tenantId = GetSelectedTenantIdFromUI();
-
+                // Validate the tenant model before adding
+                var validationResult = _validator.Validate(SelectedLease);
+                if (!validationResult.IsValid)
+                {
+                    // Validation failed, handle error
+                    MessageBox.Show(validationResult.Errors.First().ErrorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
                 leas newLease = new leas
                 {
                     // Initialize properties from text boxes
@@ -314,7 +322,14 @@ namespace LLMS.ViewModel
         private void Update(object parameter)
         {
             try
-            {
+            {    // Validate the tenant model before updating
+                var validationResult = _validator.Validate(SelectedLease);
+                if (!validationResult.IsValid)
+                {
+                    // Validation failed, handle error
+                    MessageBox.Show(validationResult.Errors.First().ErrorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
                 db.SaveChanges();
                 LoadLeaseData();
                 MessageBox.Show("Lease updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);

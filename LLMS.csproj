@@ -62,6 +62,9 @@
     <Reference Include="ExcelNumberFormat, Version=1.1.0.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
       <HintPath>packages\ExcelNumberFormat.1.1.0\lib\net20\ExcelNumberFormat.dll</HintPath>
     </Reference>
+    <Reference Include="FluentValidation, Version=11.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>packages\FluentValidation.11.9.0\lib\netstandard2.0\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Irony, Version=1.0.11.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
       <HintPath>packages\Irony.NetCore.1.0.11\lib\net461\Irony.dll</HintPath>
     </Reference>
@@ -197,6 +200,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AzureDbContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Validators.cs" />
     <Compile Include="Dto\PropertyDto.cs" />
     <Compile Include="Helper\NullOrEmptyStringToImageSourceConverter.cs" />
     <Compile Include="Helper\NullOrEmptyStringToInverseVisibilityConverter .cs" />

@@ -1,4 +1,6 @@
-﻿using LLMS.ViewModel;
+﻿using FluentValidation;
+using LLMS.Validators;
+using LLMS.ViewModel;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,6 +17,7 @@ namespace LLMS.View
         private testdb1Entities db = new testdb1Entities();
         private LeaseWindowViewModel _viewModel;
         private readonly IUnityContainer _container;
+      
 
 
         public LeaseWindow()
@@ -22,7 +25,8 @@ namespace LLMS.View
             InitializeComponent();
             _viewModel = new LeaseWindowViewModel();
             this.DataContext = _viewModel;
-         
+        
+
 
 
 

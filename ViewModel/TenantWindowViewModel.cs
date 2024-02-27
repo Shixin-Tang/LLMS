@@ -14,6 +14,8 @@ using System.IO;
 using dotenv.net;
 using static System.Net.WebRequestMethods;
 using System.Threading.Tasks;
+using LLMS.Validators;
+using FluentValidation;
 
 namespace LLMS.ViewModel
 {
@@ -23,6 +25,7 @@ namespace LLMS.ViewModel
         private string BlobConnectionString;
         private testdb1Entities db;
         private string ContainerName;
+        private TenantValidator _validator;
 
         private string _imageUrl; // Property to store the image URL
 
@@ -47,6 +50,7 @@ namespace LLMS.ViewModel
                 UpdateCommand = new RelayCommand(Update, CanUpdate);
                 DeleteCommand = new RelayCommand(Delete, CanDelete);
                 UploadImageCommand = new RelayCommand(UploadImage);
+                _validator = new TenantValidator();
 
                 LoadTenantData();
 
@@ -259,6 +263,16 @@ namespace LLMS.ViewModel
         {
             try
             {
+                // Validate the tenant model before adding
+                var validationResult = _validator.Validate(SelectedTenant);
+                if (!validationResult.IsValid)
+                {
+                    // Validation failed, handle error
+                    MessageBox.Show(validationResult.Errors.First().ErrorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                // Tenant model is valid, proceed with adding
                 tenant newTenant = new tenant
                 {
                     email = Email,
@@ -288,6 +302,15 @@ namespace LLMS.ViewModel
         {
             try
             {
+                // Validate the tenant model before updating
+                var validationResult = _validator.Validate(SelectedTenant);
+                if (!validationResult.IsValid)
+                {
+                    // Validation failed, handle error
+                    MessageBox.Show(validationResult.Errors.First().ErrorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
                 db.SaveChanges();
                 LoadTenantData();
                 MessageBox.Show("Tenant updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
