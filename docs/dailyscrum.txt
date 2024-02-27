@@ -75,7 +75,15 @@
 - Add search by address or tenant name in MainWindow 
 - Add export to Excel file feature
 2. To do until next Scrum:
-- text app
+- test app
+
+2024/02/27 Tang Shixin
+1. Done / not done since last scrum:
+- Add refresh feature on Main Window 
+- Display status bar information
+2. To do until next Scrum:
+- test app
+- fix bug
 -------------------------------------------------------------------------------------------------------
 
 2024/02/21 Cao, Lisi
