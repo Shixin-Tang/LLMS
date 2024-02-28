@@ -41,7 +41,10 @@ namespace LLMS
         public string reference_url { get; set; }
         public Nullable<bool> is_verified { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
-    
+
+        public string ImageUrl { get; set; } // Add this property
+
+
         public virtual image image { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<leas> leases { get; set; }
