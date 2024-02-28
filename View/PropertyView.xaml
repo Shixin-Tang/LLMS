@@ -13,12 +13,14 @@
         <local:StringToIntConverter x:Key="StringToIntConverter"/>
         <local:StatusToYesNoConverter x:Key="StatusToYesNoConverter"/>
     </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <!-- Ignore Menu -->
+
         <Grid Grid.Row="0" Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" MinWidth="300"/>
@@ -56,13 +58,16 @@
 
             <!-- GridSplitter -->
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
+
             <!-- Buttons -->
             <StackPanel Grid.Column="2" Orientation="Vertical" Margin="5">
                 <Button Content="Save" Command="{Binding SavePropertyCommand}" Width="80" Margin="5"/>
                 <Button Content="Delete" Command="{Binding DeletePropertyCommand}" Width="80" Margin="5"/>
             </StackPanel>
+
             <!-- GridSplitter -->
             <GridSplitter Grid.Column="3" Width="5" HorizontalAlignment="Stretch"/>
+
             <!-- Right side detail information -->
             <ScrollViewer Grid.Column="4" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >
                 <!-- Right side detail information -->
@@ -168,6 +173,8 @@
 
                         </Grid>
                     </Expander>
+
+                    <!-- Amenities -->
                     <Expander Header="Amenities" IsExpanded="False">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -179,9 +186,6 @@
                             <TextBlock Grid.Row="1" Foreground="Red" Text="{Binding SelectedProperty[Amenties]}"/>
                         </Grid>
                     </Expander>
-
-                    <!-- Amenities -->
-
 
                     <!-- Description -->
                     <Expander Header="Description" IsExpanded="False">
