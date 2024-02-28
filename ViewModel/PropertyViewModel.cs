@@ -147,7 +147,7 @@ public class PropertyViewModel : BindableBase
         }
     }
 
-    private async void LoadPropertiesAsync()
+    public async void LoadPropertiesAsync()
     {
         var properties = await _propertyService.GetAllPropertiesAsync();
         Properties.Clear();
