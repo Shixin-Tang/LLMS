@@ -69,17 +69,17 @@
                         <Label>Property ID:</Label>
                         <ComboBox Width="120" Margin="10,0,0,0"
               ItemsSource="{Binding PropertyIds}"
-              SelectedValue="{Binding SelectedLease.property_id, Mode=TwoWay}"
-              DisplayMemberPath="id"
-              SelectedValuePath="id"/>
+              SelectedValue="{Binding PropertyId, Mode=TwoWay}"
+              DisplayMemberPath="."
+              SelectedValuePath="."/>
                     </WrapPanel>
                     <WrapPanel Margin="0,20,0,0">
                         <Label>Tenant ID:</Label>
                         <ComboBox Width="120" Margin="10,0,0,0"
               ItemsSource="{Binding TenantIds}"
-              SelectedValue="{Binding SelectedLease.tenant_id, Mode=TwoWay}"
-              DisplayMemberPath="id"
-              SelectedValuePath="id"/>
+              SelectedValue="{Binding TenantId, Mode=TwoWay}"
+              DisplayMemberPath="."
+              SelectedValuePath="."/>
                     </WrapPanel>
                     <WrapPanel Margin="0,20,0,0">
                         <Label>Start Date:</Label>
