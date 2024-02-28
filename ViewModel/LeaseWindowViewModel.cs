@@ -47,6 +47,10 @@ namespace LLMS.ViewModel
         private testdb1Entities db;
         private readonly IValidator<leas> _validator;
 
+        public ObservableCollection<int> PropertyIds { get; set; }
+        public ObservableCollection<int> TenantIds { get; set; }
+        // Constructor 增加辅助方法调用
+
         public LeaseWindowViewModel()
         {
             try
@@ -58,6 +62,8 @@ namespace LLMS.ViewModel
                 _validator = new LeaseValidator();
 
                 LoadLeaseData();
+                LoadPropertyIds();
+                LoadTenantIds();
             }
             catch (Exception ex)
             {
@@ -68,6 +74,18 @@ namespace LLMS.ViewModel
         public void LoadLeaseData()
         {
             Leases = new ObservableCollection<leas>(db.leases.ToList());
+        }
+
+        private void LoadPropertyIds()
+        {
+            PropertyIds = new ObservableCollection<int>(db.properties.Select(p => p.id).ToList());
+            OnPropertyChanged(nameof(PropertyIds));
+        }
+
+        private void LoadTenantIds()
+        {
+            TenantIds = new ObservableCollection<int>(db.tenants.Select(t => t.id).ToList());
+            OnPropertyChanged(nameof(TenantIds));
         }
 
         private ObservableCollection<leas> _leases;
@@ -290,19 +308,23 @@ namespace LLMS.ViewModel
                 leas newLease = new leas
                 {
                     // Initialize properties from text boxes
-                    
+
                     property_id = int.Parse(PropertyId), // Assuming PropertyId is a string property representing the property ID from UI
                     tenant_id = int.Parse(TenantId), // Assuming TenantId is a string property representing the tenant ID from UI
                     start_date = DateTime.Parse(StartDate), // Assuming StartDate is a string property representing the start date from UI
                     end_date = DateTime.Parse(EndDate), // Assuming EndDate is a string property representing the end date from UI
                     rent_amount = decimal.Parse(RentAmount), // Assuming RentAmount is a string property representing the rent amount from UI
+                    created_at = DateTime.Now,
+                    updated_at = null, // Assuming UpdatedAt is a string property representing the updated date from UI
                     lease_clauses = LeaseClauses,
                     payment_due_day = int.Parse(PaymentDueDay), // Assuming PaymentDueDay is a string property representing the payment due day from UI
                     utility_by_owner = UtilityByOwner,
                     utility_by_tenant = UtilityByTenant,
                     renewal_term = RenewalTerm,
                     early_terminate_con = EarlyTerminateCon
-                };
+
+        
+    };
 
                 db.leases.Add(newLease);
                 db.SaveChanges();

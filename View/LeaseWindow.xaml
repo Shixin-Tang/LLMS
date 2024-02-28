@@ -64,14 +64,22 @@
                 <!-- Right details display -->
                 <StackPanel Grid.Column="2" Orientation="Vertical">
                     <!-- Details display -->
-                  
+
                     <WrapPanel Margin="0,20,0,0">
                         <Label>Property ID:</Label>
-                        <TextBox x:Name="txtPropertyId" Width="120" Margin="10,0,0,0" Text="{Binding SelectedLease.property_id}"/>
+                        <ComboBox Width="120" Margin="10,0,0,0"
+              ItemsSource="{Binding PropertyIds}"
+              SelectedValue="{Binding SelectedLease.property_id, Mode=TwoWay}"
+              DisplayMemberPath="id"
+              SelectedValuePath="id"/>
                     </WrapPanel>
                     <WrapPanel Margin="0,20,0,0">
                         <Label>Tenant ID:</Label>
-                        <TextBox x:Name="txtTenantId" Width="120" Margin="10,0,0,0" Text="{Binding SelectedLease.tenant_id}"/>
+                        <ComboBox Width="120" Margin="10,0,0,0"
+              ItemsSource="{Binding TenantIds}"
+              SelectedValue="{Binding SelectedLease.tenant_id, Mode=TwoWay}"
+              DisplayMemberPath="id"
+              SelectedValuePath="id"/>
                     </WrapPanel>
                     <WrapPanel Margin="0,20,0,0">
                         <Label>Start Date:</Label>
