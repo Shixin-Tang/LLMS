@@ -49,6 +49,10 @@ namespace LLMS
                 propertyView.Show();
                 StatusBarText.Text = "Open Property Detail";
             }
+            catch (ArgumentNullException ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred: {ex.Message}");

@@ -5,7 +5,6 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace LLMS.Service
@@ -42,12 +41,12 @@ namespace LLMS.Service
             catch (DbUpdateException ex)
             {
                 Trace.TraceError($"DbUpdateException in CreatePropertyAsync: {ex.Message}");
-                throw new ApplicationException("An error occurred while accessing the database.");
+                throw new ApplicationException("An error occurred while accessing the database.", ex);
             }
             catch (Exception ex)
             {
                 Trace.TraceError($"Exception in CreatePropertyAsync: {ex.Message}");
-                throw new ApplicationException("An unexpected error occurred.");
+                throw new ApplicationException("An unexpected error occurred.", ex);
             }
         }
 
@@ -70,19 +69,18 @@ namespace LLMS.Service
             }
             catch (DbUpdateException ex)
             {
-                // Database Update Exception
                 Trace.TraceError($"DbUpdateException in DeletePropertyAsync: {ex.Message}");
-                throw new ApplicationException("An error occurred while accessing the database.");
+                throw new ApplicationException("An error occurred while accessing the database.", ex);
             }
             catch (InvalidOperationException ex)
             {
                 Trace.TraceError($"InvalidOperationException in DeletePropertyAsync: {ex.Message}");
-                throw new ApplicationException("An invalid operation was attempted.");
+                throw new ApplicationException("An invalid operation was attempted.", ex);
             }
             catch (Exception ex)
             {
                 Trace.TraceError($"Exception in DeletePropertyAsync: {ex.Message}");
-                throw new ApplicationException("An unexpected error occurred.");
+                throw new ApplicationException("An unexpected error occurred.", ex);
             }
         }
 
@@ -100,19 +98,18 @@ namespace LLMS.Service
             }
             catch (DbUpdateException ex)
             {
-                // Database Update Exception
                 Trace.TraceError($"DbUpdateException in GetAllPropertiesAsync: {ex.Message}");
-                throw new ApplicationException("An error occurred while accessing the database.");
+                throw new ApplicationException("An error occurred while accessing the database.", ex);
             }
             catch (InvalidOperationException ex)
             {
                 Trace.TraceError($"InvalidOperationException in GetAllPropertiesAsync: {ex.Message}");
-                throw new ApplicationException("An invalid operation was attempted.");
+                throw new ApplicationException("An invalid operation was attempted.", ex);
             }
             catch (Exception ex)
             {
                 Trace.TraceError($"Exception in GetAllPropertiesAsync: {ex.Message}");
-                throw new ApplicationException("An unexpected error occurred.");
+                throw new ApplicationException("An unexpected error occurred.", ex);
             }
         }
 
@@ -135,17 +132,17 @@ namespace LLMS.Service
             catch (DbUpdateException ex)
             {
                 Trace.TraceError($"DbUpdateException in GetPropertyByIdAsync: {ex.Message}");
-                throw new ApplicationException("An error occurred while accessing the database.");
+                throw new ApplicationException("An error occurred while accessing the database.", ex);
             }
             catch (InvalidOperationException ex)
             {
                 Trace.TraceError($"InvalidOperationException in GetPropertyByIdAsync: {ex.Message}");
-                throw new ApplicationException("An invalid operation was attempted.");
+                throw new ApplicationException("An invalid operation was attempted.", ex);
             }
             catch (Exception ex)
             {
                 Trace.TraceError($"Exception in GetPropertyByIdAsync: {ex.Message}");
-                throw new ApplicationException("An unexpected error occurred.");
+                throw new ApplicationException("An unexpected error occurred.", ex);
             }
         }
 
@@ -220,19 +217,18 @@ namespace LLMS.Service
             }
             catch (DbUpdateException ex)
             {
-                // Database Update Exception
                 Trace.TraceError($"DbUpdateException in UpdatePropertyAsync: {ex.Message}");
-                throw new ApplicationException("An error occurred while accessing the database.");
+                throw new ApplicationException("An error occurred while accessing the database.", ex);
             }
             catch (InvalidOperationException ex)
             {
                 Trace.TraceError($"InvalidOperationException in UpdatePropertyAsync: {ex.Message}");
-                throw new ApplicationException("An invalid operation was attempted.");
+                throw new ApplicationException("An invalid operation was attempted.", ex);
             }
             catch (Exception ex)
             {
                 Trace.TraceError($"Exception in UpdatePropertyAsync: {ex.Message}");
-                throw new ApplicationException("An unexpected error occurred.");
+                throw new ApplicationException("An unexpected error occurred.", ex);
             }
         }
 
@@ -274,7 +270,7 @@ namespace LLMS.Service
                     year_built = dto.YearBuilt,
                     rental_price = dto.RentalPrice,
                     amenities = dto.Amenities,
-                    status = dto.Status, // 确保Status字段适配了您的需求
+                    status = dto.Status, 
                     lease_terms = dto.LeaseTerms,
                     image_id = dto.ImageId,
                     description = dto.Description,
@@ -284,7 +280,7 @@ namespace LLMS.Service
             catch (Exception ex)
             {
                 Trace.TraceError($"Exception in MapToModel: {ex.Message}");
-                throw new ApplicationException("An unexpected error occurred during the mapping process.");
+                throw new ApplicationException("An unexpected error occurred during the mapping process.", ex);
             }
         }
     }

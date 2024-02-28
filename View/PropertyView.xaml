@@ -12,6 +12,7 @@
         <local:NullOrEmptyStringToImageSourceConverter x:Key="NullOrEmptyStringToImageSourceConverter"/>
         <local:StringToIntConverter x:Key="StringToIntConverter"/>
         <local:StatusToYesNoConverter x:Key="StatusToYesNoConverter"/>
+        <local:DecimalToStringConverter x:Key="DecimalToStringConverter"/>
     </Window.Resources>
 
     <Grid>
@@ -157,7 +158,7 @@
                             </Grid.ColumnDefinitions>
 
                             <Label Content="Rental Price:" Grid.Row="0" Grid.Column="0"/>
-                            <TextBox x:Name="rentalPriceTextBox" Text="{Binding SelectedProperty.RentalPrice, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" Width="120"/>
+                            <TextBox x:Name="rentalPriceTextBox" Text="{Binding SelectedProperty.RentalPrice, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DecimalToStringConverter}}" Grid.Row="0" Grid.Column="1" Width="120"/>
                             <TextBlock Grid.Row="0" Grid.Column="2" Foreground="Red" Text="{Binding SelectedProperty[RentalPrice]}"/>
 
                             <Label Content="Lease Terms:" Grid.Row="1" Grid.Column="0"/>

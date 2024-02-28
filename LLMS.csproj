@@ -200,6 +200,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AzureDbContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Helper\DecimalToStringConverter.cs" />
     <Compile Include="Validators.cs" />
     <Compile Include="Dto\PropertyDto.cs" />
     <Compile Include="Helper\NullOrEmptyStringToImageSourceConverter.cs" />

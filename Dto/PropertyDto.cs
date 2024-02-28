@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 
 namespace LLMS.Dto
 {
-
     public class PropertyDto : IDataErrorInfo, INotifyPropertyChanged
     {
         private bool _hasBeenEdited = false;
@@ -172,12 +171,8 @@ namespace LLMS.Dto
                         // TODO: Add validation logic as needed
                         break;
                 }
-
                 return error;
             }
         }
     }
 }
-
-
-

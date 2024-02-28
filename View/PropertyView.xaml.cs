@@ -1,4 +1,5 @@
 using LLMS.Service;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,6 +12,11 @@ namespace LLMS.View
     {
         public PropertyView(IPropertyService propertyService, IImageService imageService)
         {
+            if (propertyService == null || imageService == null)
+            {
+                throw new ArgumentNullException("Service cannot be null");
+            }
+
             InitializeComponent();
             this.DataContext = new PropertyViewModel(propertyService, imageService);
         }
@@ -29,8 +35,7 @@ namespace LLMS.View
             if (vm !=null && e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 var files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                var viewModel = this.DataContext as PropertyViewModel;
-                viewModel?.HandleFileDrop(files[0]);
+                vm.HandleFileDrop(files[0]);
             }
         }
 

@@ -24,16 +24,22 @@ public class AzureBlobStorageClient : IAzureBlobStorageClient
         {
             throw new ApplicationException("Azure Storage connection string is null or empty.");
         }
-
     }
 
     public async Task<string> UploadFileAsync(string containerName, string blobName, Stream fileStream)
     {
-        var container = _blobClient.GetContainerReference(containerName);
-        await container.CreateIfNotExistsAsync();
-        var blockBlob = container.GetBlockBlobReference(blobName);
-        await blockBlob.UploadFromStreamAsync(fileStream);
-        return blockBlob.Uri.ToString();
+        try
+        {
+            var container = _blobClient.GetContainerReference(containerName);
+            await container.CreateIfNotExistsAsync();
+            var blockBlob = container.GetBlockBlobReference(blobName);
+            await blockBlob.UploadFromStreamAsync(fileStream);
+            return blockBlob.Uri.ToString();
+        }
+        catch (StorageException ex)
+        {
+            throw new ApplicationException($"An error occurred while uploading to Azure Blob Storage: {ex.Message}", ex);
+        }
     }
 
     // Add more methods for other operations like downloading, listing blobs, etc.

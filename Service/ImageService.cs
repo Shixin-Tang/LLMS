@@ -43,7 +43,6 @@ namespace LLMS.Service
             }
         }
 
-
         public async Task<string> GetImageUrlByIdAsync(int imageId)
         {
             try
@@ -66,7 +65,6 @@ namespace LLMS.Service
             }
         }
 
-
         public async Task<string> UploadImageAsync(Stream imageStream, string imageName)
         {
             string containerName = "fsd10-demo-blob";
@@ -79,7 +77,7 @@ namespace LLMS.Service
             }
             catch (Exception ex)
             {
-                throw new ApplicationException($"An error occurred while uploading the image: {ex.Message}");
+                throw new ApplicationException($"An error occurred while uploading the image: {ex.Message}", ex);
             }
         }
 
