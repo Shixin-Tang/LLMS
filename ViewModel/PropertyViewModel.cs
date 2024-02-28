@@ -46,6 +46,7 @@ public class PropertyViewModel : BindableBase
 
         LoadPropertiesAsync();
     }
+    
     public async void HandleFileDrop(string filePath)
     {
         try
@@ -94,7 +95,6 @@ public class PropertyViewModel : BindableBase
     }
 
     private bool CanExecuteSaveProperty() => SelectedProperty != null && (_isAddingNewProperty || SelectedProperty.Id == 0 || !string.IsNullOrWhiteSpace(SelectedProperty.Address));
-
     private async void ExecuteSaveProperty()
     {
         try
@@ -128,7 +128,6 @@ public class PropertyViewModel : BindableBase
     }
 
     private bool CanExecuteDeleteProperty() => SelectedProperty != null && SelectedProperty.Id > 0;
-
     private async void ExecuteDeleteProperty()
     {
         try

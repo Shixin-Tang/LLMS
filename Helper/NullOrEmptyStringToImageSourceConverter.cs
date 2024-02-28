@@ -13,8 +13,6 @@ namespace LLMS.Helper
             var path = value as string;
             if (string.IsNullOrEmpty(path))
             {
-                // 如果路径为空，返回 null 或默认图片
-                // return new BitmapImage(new Uri("默认图片路径"));
                 return null;
             }
 

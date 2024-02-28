@@ -5,7 +5,7 @@ using System.Windows.Controls;
 namespace LLMS.View
 {
     /// <summary>
-    /// PropertyView.xaml 的交互逻辑
+    /// PropertyView.xaml logics
     /// </summary>
     public partial class PropertyView : Window
     {
@@ -29,7 +29,6 @@ namespace LLMS.View
             if (vm !=null && e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 var files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                // Assuming the first file is the one we're interested in
                 var viewModel = this.DataContext as PropertyViewModel;
                 viewModel?.HandleFileDrop(files[0]);
             }
