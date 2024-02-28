@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LLMS"
         mc:Ignorable="d"
-        Title="Home - Landlord Management System" Height="768" Width="1024">
+        Title="Home - Landlord Management System" Height="768" Width="1024"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <DockPanel>
             <!-- top menu and ietm -->

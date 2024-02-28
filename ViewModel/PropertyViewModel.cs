@@ -59,6 +59,8 @@ public class PropertyViewModel : BindableBase
                 {
                     SelectedProperty.ImageUrl = imageUrl;
                     RaisePropertyChanged(nameof(SelectedProperty));
+                    var imageId = await _imageService.CreateImageRecordAsync(imageUrl);
+                    SelectedProperty.ImageId = imageId;
                     StatusMessage = "Image uploaded successfully from drag and drop.";
                 }
             }

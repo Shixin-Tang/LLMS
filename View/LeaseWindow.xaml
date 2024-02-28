@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LLMS.ViewModel"
         mc:Ignorable="d"
-        Title="Lease - Landlord Management System" Height="768" Width="1024">
+        Title="Lease - Landlord Management System" Height="768" Width="1024"
+        WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <local:LeaseWindowViewModel/>
     </Window.DataContext>
