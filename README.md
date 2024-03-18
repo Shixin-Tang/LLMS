@@ -62,3 +62,20 @@ Show the tenant list and detail information, and allow the user to create, updat
 
 Show the property list and detail information including one image, and allow the user to create, update, or delete one property.
 ![Property Window](images/LLMS-property.jpg)
+
+## Final application Snapshots
+### These are the snapshots of the final application.
+
+### Main Window
+![Main Window](images/LLMS-1.jpg)
+
+### Lease Window
+![Lease Window](images/LLMS-2.jpg)
+
+### Tenant Window
+![Tenant Window](images/LLMS-3.jpg)
+
+### Property Window
+![Property Window](images/LLMS-4.jpg)
+
+
